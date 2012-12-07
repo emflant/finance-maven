@@ -26,7 +26,7 @@ import com.emflant.common.EntHashList;
 import com.emflant.common.EntScreenMain;
 
 /**
- * �ŷ�������ȸ ȭ��
+ * 거래내역조회 화면
  * @author home
  *
  */
@@ -81,27 +81,26 @@ public class A02AccountDetailInquiryMain extends EntScreenMain {
 		this.southPanel.setBackground(Color.WHITE);
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
-		this.lbAccount = new JLabel("����");
+		this.lbAccount = new JLabel("계좌");
 		this.cbAccount = new EntJComboBox();
 		this.cbAccount.addActionListener(new CbAccountChangeListener());
 		
-		this.lbBalance = new JLabel("       �ܾ�");
+		this.lbBalance = new JLabel("       잔액");
 		this.tfBalance = new EntJTextFieldForAmount(10);
 		this.tfBalance.setEnabled(false);
 		
-		this.lbTradeDate = new JLabel("       �������");
+		this.lbTradeDate = new JLabel("       기산일자");
 		this.tfTradeDate = new EntJTextFieldForDate(7);
 				
 		this.tbAccountDetail = new EntJTable();
 		
-		//�׸����� ��������� �����Ѵ�.
 		this.tbAccountDetail.entAddTableHeader("trade_sequence", "#", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "�ŷ�����", JLabel.CENTER, 100);
-		this.tbAccountDetail.entAddTableHeader("trade_type_name", "����", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "���", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "�ŷ��ݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "�ܾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("remarks", "���", JLabel.LEFT, 260);
+		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "거래일자", JLabel.CENTER, 100);
+		this.tbAccountDetail.entAddTableHeader("trade_type_name", "종류", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "취소", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "거래금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "잔액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("remarks", "적요", JLabel.LEFT, 260);
 		
 		this.panel1.add(lbAccount);
 		this.panel1.add(cbAccount);
@@ -117,7 +116,7 @@ public class A02AccountDetailInquiryMain extends EntScreenMain {
 		
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle("[A02] �ŷ�������ȸ");
+		setTitle("[A02] 거래내역조회");
 		
 	}
 	

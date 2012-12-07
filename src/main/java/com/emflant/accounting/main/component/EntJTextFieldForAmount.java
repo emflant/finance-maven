@@ -48,7 +48,7 @@ public class EntJTextFieldForAmount {
 	
 	public void setValue(String value){
 		
-		//Æ÷¸ËÀü °ªÀ» ¹Þ¾Æ ÇÊµå¿¡ Æ÷¸ËÆÃÇÑ °ªÀ» º¸¿©ÁØ´Ù.
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ ï¿½Êµå¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½.
 		String str = this.decimalFormat.format(new BigDecimal(value).longValue());
 		this.jTextField.setText(str);
 	}

@@ -33,7 +33,7 @@ import com.emflant.common.EntHashList;
 import com.emflant.common.EntScreenMain;
 
 /**
- * ī����� ȭ��
+ * 카드승인 화면
  * @author home
  *
  */
@@ -101,44 +101,41 @@ public class A03CreditCardPaymentMain extends EntScreenMain {
 		this.southPanel.setBackground(Color.WHITE);
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		this.lbAccount = new JLabel("����");
+		this.lbAccount = new JLabel("계좌");
 		this.cbAccount = new EntJComboBox();
 		this.cbAccount.addActionListener(new CbAccountChangeListener());
 		
-		this.lbBalance = new JLabel("       �ܾ�");
+		this.lbBalance = new JLabel("       잔액");
 		this.tfBalance = new EntJTextFieldForAmount(10);
 		this.tfBalance.setEnabled(false);
 		
-		this.lbTradeDate = new JLabel("       �������");
+		this.lbTradeDate = new JLabel("       기산일자");
 		this.tfTradeDate = new EntJTextFieldForDate(7);
 		
 		this.cbTradeType = new EntJComboBox();
 		
-		this.lbTradeAmount = new JLabel("�Ѿ�");
+		this.lbTradeAmount = new JLabel("총액");
 		this.tfTradeAmount = new EntJTextFieldForAmount(7);
 		
-		this.lbCashAmount = new JLabel("�����Ա�");
+		this.lbCashAmount = new JLabel("현금입금");
 		this.tfCashAmount = new EntJTextFieldForAmount(7);
 		
-		this.lbRemarks = new JLabel("���");
+		this.lbRemarks = new JLabel("적요");
 		
 		this.tfRemarks = new EntJTextFieldForRemarks(15);
 		
-		this.btnInsert = new EntJButton("���");
+		this.btnInsert = new EntJButton("등록");
 		this.btnInsert.addActionListener(new InsertButtonListener());
-		//this.btnDelete = new JButton("����");
-		//this.btnDelete.addActionListener(new DeleteButtonListener());
 		
 		this.tbAccountDetail = new EntJTable();
 		
-		//�׸����� ��������� �����Ѵ�.
 		this.tbAccountDetail.entAddTableHeader("trade_sequence", "#", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "�ŷ�����", JLabel.CENTER, 100);
-		this.tbAccountDetail.entAddTableHeader("trade_type_name", "����", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "���", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "�ŷ��ݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "�ܾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("remarks", "���", JLabel.LEFT, 260);
+		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "거래일자", JLabel.CENTER, 100);
+		this.tbAccountDetail.entAddTableHeader("trade_type_name", "종류", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "취소", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "거래금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "잔액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("remarks", "적요", JLabel.LEFT, 260);
 
 		this.panel1.add(lbAccount);
 		this.panel1.add(cbAccount);
@@ -151,17 +148,12 @@ public class A03CreditCardPaymentMain extends EntScreenMain {
 
 		this.panel2.add(lbTradeAmount);
 		tfTradeAmount.addPanel(this.panel2);
-		//this.panel2.add(tfTradeAmount);
 		this.panel2.add(lbCashAmount);
 		tfCashAmount.addPanel(this.panel2);
-		//this.panel2.add(tfCashAmount);
 		
 		this.panel2.add(lbRemarks);
 		tfRemarks.addPanel(this.panel2);
-		//this.panel2.add(tfRemarks);
 		btnInsert.addPanel(panel2);
-		//this.panel2.add(btnInsert);
-		//this.panel2.add(btnDelete);
 		
 		this.northPanel.add(panel1);
 		this.southPanel.add(panel2);
@@ -170,7 +162,7 @@ public class A03CreditCardPaymentMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle("[A03] ī�����");
+		setTitle("[A03] 카드승인");
 		
 	}
 	
@@ -179,12 +171,12 @@ public class A03CreditCardPaymentMain extends EntScreenMain {
 	public void insert(){
 
 		if(this.tfTradeAmount.getValue().equals("0")){
-			showMessageDialog("�ŷ��ݾ��� 0�Դϴ�.");
+			showMessageDialog("거래금액이 0입니다.");
 			return;
 		}
 		
 		int nResult = showConfirmDialog(this.cbTradeType.entGetCodeNameOfSelectedItem()
-				+"(��)�� ī����� ó���Ͻðڽ��ϱ�?");
+				+"(으)로 카드승인 처리하시겠습니까?");
 		if(nResult != 0) return;
 		
 		String strAccountNo = this.cbAccount.entGetCodeOfSelectedItem();
@@ -223,7 +215,7 @@ public class A03CreditCardPaymentMain extends EntScreenMain {
 		
 		BigDecimal bdNonCashAmount = inputDTO.getTotalAmount().subtract(inputDTO.getCashAmount());
 		
-		//�����ŷ��϶��� �ŷ������� �ִ´�.
+		//연동거래일때만 거래유형을 넣는다.
 		if(bdNonCashAmount.compareTo(BigDecimal.ZERO) == 1){
 			SlipMasterDTO slipMaster = new SlipMasterDTO();
 			slipMaster.setSlipAmount(bdNonCashAmount);
@@ -236,7 +228,7 @@ public class A03CreditCardPaymentMain extends EntScreenMain {
 			businessDTO.addTransaction("S03201", slipMaster);
 		}
 		
-		//������ ������ �ٷ� �������� �Ա�ó���Ѵ�.
+		//현금을 받으면 바로 지갑으로 입금처리한다.
 		if(inputDTO.getCashAmount().compareTo(BigDecimal.ZERO) == 1){
 			A04DepositAccountMainInsert01DTO inputDTO3 = new A04DepositAccountMainInsert01DTO();
 			inputDTO3.setAccountNo("1900000005");
