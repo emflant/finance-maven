@@ -62,7 +62,7 @@ public class X02MakeRemoteInterface extends EntScreenMain {
 		this.centerPanel.setBackground(Color.WHITE);
 		this.centerPanel.setLayout(new BorderLayout());
 		
-		this.lbCodeType = new JLabel("���̺�");
+		this.lbCodeType = new JLabel("테이블");
 		this.cbBeanType = new EntJComboBox();
 		this.cbBeanType.addActionListener(new X02ChangeBeanTypeComboBoxListener());
 
@@ -73,8 +73,8 @@ public class X02MakeRemoteInterface extends EntScreenMain {
 		this.tfCodeName = new JTextField();
 		this.tfCodeName.setColumns(8);
 		
-		this.btnInsert = new JButton("���ϻ�");
-		this.btnAllInsert = new JButton("��ü���ϻ�");
+		this.btnInsert = new JButton("파일생성");
+		this.btnAllInsert = new JButton("전체파일생성");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 		this.btnAllInsert.addActionListener(new AllInsertButtonListener());
 
@@ -82,11 +82,11 @@ public class X02MakeRemoteInterface extends EntScreenMain {
 		
 		this.tbCodeDetailList = new EntJTable();
 		
-		this.tbCodeDetailList.entAddTableHeader("trade_code", "�ŷ��ڵ�", JLabel.CENTER, 70);
-		this.tbCodeDetailList.entAddTableHeader("trade_name", "�ŷ���", JLabel.LEFT, 150);
-		this.tbCodeDetailList.entAddTableHeader("bean_type", "Ŭ������", JLabel.LEFT, 150);
-		this.tbCodeDetailList.entAddTableHeader("method_type", "�޼ҵ��", JLabel.LEFT, 150);
-		this.tbCodeDetailList.entAddTableHeader("parameter_type", "�Է°�", JLabel.LEFT, 150);
+		this.tbCodeDetailList.entAddTableHeader("trade_code", "거래코드", JLabel.CENTER, 70);
+		this.tbCodeDetailList.entAddTableHeader("trade_name", "거래명", JLabel.LEFT, 150);
+		this.tbCodeDetailList.entAddTableHeader("bean_type", "클래스명", JLabel.LEFT, 150);
+		this.tbCodeDetailList.entAddTableHeader("method_type", "메소드명", JLabel.LEFT, 150);
+		this.tbCodeDetailList.entAddTableHeader("parameter_type", "입력값", JLabel.LEFT, 150);
 		
 		
 		this.panel1.add(lbCodeType);
@@ -108,7 +108,7 @@ public class X02MakeRemoteInterface extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
-		setTitle("[X02] �ŷ��ڵ� ���� ��ȸ");
+		setTitle("[X02] 거래코드 정보 조회");
 
 	}
 	
@@ -129,11 +129,7 @@ public class X02MakeRemoteInterface extends EntScreenMain {
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			
-			//����Ѵ�.
 			insert(cbBeanType.entGetCodeOfSelectedItem());
-			
-			//����ȸ�Ѵ�.
 			//tbCodeDetailList.setModel(codeDetailBean.selectTableModelByCodeType(getCodeType()));
 		}
 	}
@@ -142,8 +138,6 @@ public class X02MakeRemoteInterface extends EntScreenMain {
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			//����Ѵ�.
-			
 			List<CodeDetailDTO> list = cbBeanType.getCodeDetailList();
 			
 			for(CodeDetailDTO codeDetailDTO : list){

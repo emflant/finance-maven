@@ -60,10 +60,10 @@ public class SlipBean implements SlipRemote {
 		slipMasterDTO.setSlipNo(getSlipNo());
 		slipMasterDTO.setSlipSequence(transaction.getSlipSeq());
 		
-		//ÀüÇ¥¿øÀå µî·Ï
+		//ì „í‘œì›ì¥ ë“±ë¡
 		insert(slipMasterDTO);
 		
-		//ÀüÇ¥±İ¾×³»¿ª µî·Ï
+		//ì „í‘œê¸ˆì•¡ë‚´ì—­ ë“±ë¡
 		List<SlipDetailDTO> amounts = slipMasterDTO.getAmounts();
 		
 		for(SlipDetailDTO amount : amounts){
@@ -76,7 +76,7 @@ public class SlipBean implements SlipRemote {
 	
 	
 	/**
-	 * ÀüÇ¥ Ãë¼Ò/Á¤Á¤ Ã³¸®¸¦ ÇÑ´Ù.
+	 * ì „í‘œ ì·¨ì†Œ/ì •ì • ì²˜ë¦¬ë¥¼ í•œë‹¤.
 	 * @param inputDTO
 	 * @throws EntException
 	 */
@@ -94,7 +94,7 @@ public class SlipBean implements SlipRemote {
 			List<SlipMasterDTO> lResult = this.transaction.select(SlipMasterDTO.class, sb);
 			
 			if(lResult.isEmpty()){
-				throw new EntException("ÇØ´ç ÀüÇ¥°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+				throw new EntException("í•´ë‹¹ ì „í‘œê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			}
 			
 			SlipMasterDTO slipMasterDTO = lResult.get(0);
@@ -108,7 +108,7 @@ public class SlipBean implements SlipRemote {
 	
 
 	/**
-	 * ÀüÇ¥¸¦ Ãë¼ÒÃ³¸®ÇÑ´Ù.
+	 * ì „í‘œë¥¼ ì·¨ì†Œì²˜ë¦¬í•œë‹¤.
 	 * @param slipNo
 	 * @param slipSequence
 	 * @throws EntException
@@ -120,7 +120,7 @@ public class SlipBean implements SlipRemote {
 	
 
 	public void cancelOfToday(AccountDetailDTO accountDetailDTO) throws EntException{
-		//±âÁ¸ÀüÇ¥¸¦ Ãë¼Ò·Î ¼öÁ¤.
+		//ê¸°ì¡´ì „í‘œë¥¼ ì·¨ì†Œë¡œ ìˆ˜ì •.
 		StringBuilder sbQuery = new StringBuilder(256);
 		sbQuery.append(" update slip_master    ");
 		sbQuery.append(" set cancel_type = '1'         ");
@@ -136,13 +136,13 @@ public class SlipBean implements SlipRemote {
 		this.transaction.update(sbQuery);
 		
 		
-		//»õ·Î¿î Ãë¼ÒÀüÇ¥¸¦ »ı¼º
+		//ìƒˆë¡œìš´ ì·¨ì†Œì „í‘œë¥¼ ìƒì„±
 		
 		
 	}
 	
 	public SlipMasterDTO getCancelSlipOfReckonDate(String slipNo, Integer slipSequence) throws EntException{
-		//»õ·Î¿î Á¤Á¤ÀüÇ¥¸¦ »ı¼º
+		//ìƒˆë¡œìš´ ì •ì •ì „í‘œë¥¼ ìƒì„±
 		SlipMasterDTO slipMasterDTO = select(slipNo, slipSequence);
 		
 		slipMasterDTO.setAmounts(selectSlipDetails(slipNo, slipSequence));
@@ -358,7 +358,7 @@ public class SlipBean implements SlipRemote {
 			slipMasterDTO.setRegisterUserId(slipMasterDTO.getUserId());
 			slipMasterDTO.setLastRegisterUserId(slipMasterDTO.getUserId());
 			
-			//ÀüÇ¥±İ¾×³»¿ª µî·Ï
+			//ì „í‘œê¸ˆì•¡ë‚´ì—­ ë“±ë¡
 			List<SlipDetailDTO> amounts = slipMasterDTO.getAmounts();
 			
 			for(SlipDetailDTO amount : amounts){
@@ -488,10 +488,10 @@ public class SlipBean implements SlipRemote {
 /*
 	public void execute2(SlipMaster slipMaster) throws EntException{
 		
-		//ÀüÇ¥¿øÀå µî·Ï
+		//ì „í‘œì›ì¥ ë“±ë¡
 		insert(slipMaster);
 		
-		//ÀüÇ¥±İ¾×³»¿ª µî·Ï
+		//ì „í‘œê¸ˆì•¡ë‚´ì—­ ë“±ë¡
 		List<SlipAmountDetail> debtorAmounts = slipMaster.getDebtorAmounts();
 		for(SlipAmountDetail debtorAmount : debtorAmounts){
 			if(debtorAmount.getAmount().compareTo(BigDecimal.ZERO)==0) continue;
@@ -504,7 +504,7 @@ public class SlipBean implements SlipRemote {
 			insert(creditAmount);
 		}
 		
-		//ÀüÇ¥¸í¼¼ µî·Ï
+		//ì „í‘œëª…ì„¸ ë“±ë¡
 		int nDebtorAmounts = debtorAmounts.size();
 		int nCreditAmounts = creditAmounts.size();
 		
@@ -533,7 +533,7 @@ public class SlipBean implements SlipRemote {
 					continue;
 				}
 				
-				//Â÷º¯±İ¾× >= ´ëº¯±İ¾×
+				//ì°¨ë³€ê¸ˆì•¡ >= ëŒ€ë³€ê¸ˆì•¡
 				if(bdDebtorAmount.compareTo(bdCreditAmount) >= 0){
 					strDebtorAccountType = debtorAmount.getAccountType();
 					strCreditAccountType = creditAmount.getAccountType();
@@ -542,7 +542,7 @@ public class SlipBean implements SlipRemote {
 					bdDebtorAmount = bdDebtorAmount.subtract(bdCreditAmount);
 					bdCreditAmount = BigDecimal.ZERO;
 				} 
-				//Â÷º¯±İ¾× < ´ëº¯±İ¾×
+				//ì°¨ë³€ê¸ˆì•¡ < ëŒ€ë³€ê¸ˆì•¡
 				else {
 					strDebtorAccountType = debtorAmount.getAccountType();
 					strCreditAccountType = creditAmount.getAccountType();

@@ -61,7 +61,7 @@ public class SourceFactory {
 		
 		EntLogger.debug(sb.toString());
 		
-		//ÆÄÀÏ·Î »ı¼ºÇÑ´Ù.
+		//íŒŒì¼ë¡œ ìƒì„±í•œë‹¤.
 		FileTest ft = new FileTest(this.className, packageName);
 		ft.test(sb.toString());
 	}
@@ -86,20 +86,20 @@ public class SourceFactory {
 		sb.append(this.className);
 		sb.append(" implements EntTable {\n\n");
 		
-		//ÇÊµå »ı¼ºÇÑ´Ù.
+		//í•„ë“œ ìƒì„±í•œë‹¤.
 		sb.append(createFields(list));
 		
 		sb.append("\n");
 		
-		//»ı¼ºÀÚ »ı¼ºÇÑ´Ù.
+		//ìƒì„±ì ìƒì„±í•œë‹¤.
 		sb.append(createConstructor(list));
 		
 		sb.append("\n");
 		
-		//get, set ¸Ş¼Òµå »ı¼ºÇÑ´Ù.
+		//get, set ë©”ì†Œë“œ ìƒì„±í•œë‹¤.
 		sb.append(createMethods(list));
 		
-		//insert ¸Ş¼Òµå »ı¼ºÇÑ´Ù.
+		//insert ë©”ì†Œë“œ ìƒì„±í•œë‹¤.
 		sb.append(createInsertMethod(list));
 		
 		sb.append("\n");
@@ -107,7 +107,7 @@ public class SourceFactory {
 		
 		//Logger.debug(sb.toString());
 		
-		//ÆÄÀÏ·Î »ı¼ºÇÑ´Ù.
+		//íŒŒì¼ë¡œ ìƒì„±í•œë‹¤.
 		FileTest ft = new FileTest(this.className, packageName);
 		ft.test(sb.toString());
 	}

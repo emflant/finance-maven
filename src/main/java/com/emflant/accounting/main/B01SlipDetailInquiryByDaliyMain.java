@@ -3,7 +3,6 @@ package com.emflant.accounting.main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -12,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -22,7 +20,6 @@ import com.emflant.accounting.dto.table.SlipDetailDTO;
 import com.emflant.accounting.main.component.EntJTable;
 import com.emflant.common.EntBusiness;
 import com.emflant.common.EntBean;
-import com.emflant.common.EntCommon;
 import com.emflant.common.EntDate;
 import com.emflant.common.EntScreenMain;
 import com.emflant.common.EntTransaction;
@@ -78,36 +75,36 @@ public class B01SlipDetailInquiryByDaliyMain extends EntScreenMain {
 		
 
 		
-		this.lbTradeDate = new JLabel("��������");
+		this.lbTradeDate = new JLabel("기준일자");
 		this.tfTradeDate = new JTextField(7);
 		this.tfTradeDate.setText(EntDate.getToday());
 		this.tfTradeDate.setHorizontalAlignment(JTextField.CENTER);
 
-		this.btnInsert = new JButton("���");
+		this.btnInsert = new JButton("등록");
 		//this.btnInsert.addActionListener(new InsertButtonListener());
-		this.btnDelete = new JButton("����");
+		this.btnDelete = new JButton("삭제");
 		//this.btnDelete.addActionListener(new DeleteButtonListener());
 		
 		this.tbSlipMaster = new EntJTable();
 		this.tbSlipMaster.getSelectionModel().addListSelectionListener(new TableSelectionListener());
 		this.tbSlipDetail = new EntJTable();
 		
-		//��ǥ������ �׸����� ��������� �����Ѵ�.
-		this.tbSlipMaster.entAddTableHeader("slip_no", "��ǥ��ȣ", JLabel.CENTER, 140);
+		//전표원장의 그리드의 헤더정보를 정의한다.
+		this.tbSlipMaster.entAddTableHeader("slip_no", "전표번호", JLabel.CENTER, 140);
 		this.tbSlipMaster.entAddTableHeader("slip_sequence", "#", JLabel.CENTER, 20);
-		this.tbSlipMaster.entAddTableHeader("format_slip_date", "��ǥ����", JLabel.CENTER, 90);
-		this.tbSlipMaster.entAddTableHeader("format_slip_amount", "��ǥ�ݾ�", JLabel.RIGHT, 100);
-		this.tbSlipMaster.entAddTableHeader("format_debtor_amount", "�����ݾ�", JLabel.RIGHT, 100);
-		this.tbSlipMaster.entAddTableHeader("format_credit_amount", "�뺯�ݾ�", JLabel.RIGHT, 100);
+		this.tbSlipMaster.entAddTableHeader("format_slip_date", "전표일자", JLabel.CENTER, 90);
+		this.tbSlipMaster.entAddTableHeader("format_slip_amount", "전표금액", JLabel.RIGHT, 100);
+		this.tbSlipMaster.entAddTableHeader("format_debtor_amount", "차변금액", JLabel.RIGHT, 100);
+		this.tbSlipMaster.entAddTableHeader("format_credit_amount", "대변금액", JLabel.RIGHT, 100);
 
-		//��ǥ������ �׸����� ��������� �����Ѵ�.
+		//전표내역의 그리드의 헤더정보를 정의한다.
 		this.tbSlipDetail.entAddTableHeader("sequence", "#", JLabel.CENTER, 30);
-		this.tbSlipDetail.entAddTableHeader("account_type_name", "����", JLabel.LEFT, 100);
-		this.tbSlipDetail.entAddTableHeader("bs_pl_detail_type_name", "����", JLabel.CENTER, 50);
-		this.tbSlipDetail.entAddTableHeader("debtor_credit_type_name", "����", JLabel.CENTER, 50);
-		this.tbSlipDetail.entAddTableHeader("total_amount", "�ݾ�", JLabel.RIGHT, 100);
-		this.tbSlipDetail.entAddTableHeader("cash_amount", "���ݱݾ�", JLabel.RIGHT, 100);
-		this.tbSlipDetail.entAddTableHeader("non_cash_amount", "��ü�ݾ�", JLabel.RIGHT, 100);
+		this.tbSlipDetail.entAddTableHeader("account_type_name", "계정", JLabel.LEFT, 100);
+		this.tbSlipDetail.entAddTableHeader("bs_pl_detail_type_name", "구분", JLabel.CENTER, 50);
+		this.tbSlipDetail.entAddTableHeader("debtor_credit_type_name", "구분", JLabel.CENTER, 50);
+		this.tbSlipDetail.entAddTableHeader("total_amount", "금액", JLabel.RIGHT, 100);
+		this.tbSlipDetail.entAddTableHeader("cash_amount", "현금금액", JLabel.RIGHT, 100);
+		this.tbSlipDetail.entAddTableHeader("non_cash_amount", "대체금액", JLabel.RIGHT, 100);
 
 		this.panel1.add(lbTradeDate);
 		this.panel1.add(tfTradeDate);
@@ -124,7 +121,7 @@ public class B01SlipDetailInquiryByDaliyMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		//this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle(this.userId + "�� �Ϻ���ǥ����");
+		setTitle(this.userId + "의 일별전표내역");
 		
 	}
 	
@@ -211,7 +208,7 @@ public class B01SlipDetailInquiryByDaliyMain extends EntScreenMain {
 
 
 	/**
-	 * ������ ���� �׸���Ŭ���� ������ ���ε� �Ѵ�.
+	 * 수정을 위해 그리드클릭시 데이터 바인딩 한다.
 	 */
 	public void bindUpdateData(){
 		

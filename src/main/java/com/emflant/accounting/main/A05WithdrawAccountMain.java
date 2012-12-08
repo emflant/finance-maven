@@ -8,12 +8,10 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.emflant.accounting.dto.screen.A05WithdrawAccountMainInsert01DTO;
@@ -30,7 +28,7 @@ import com.emflant.common.EntBean;
 import com.emflant.common.EntHashList;
 import com.emflant.common.EntScreenMain;
 /**
- * ������� ȭ��
+ * 계좌출금 화면
  * @author home
  *
  */
@@ -103,40 +101,40 @@ public class A05WithdrawAccountMain extends EntScreenMain {
 		this.southPanel.setBackground(Color.WHITE);
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		this.lbAccount = new JLabel("����");
+		this.lbAccount = new JLabel("계좌");
 		this.cbAccount = new EntJComboBox();
 		this.cbAccount.addActionListener(new CbAccountChangeListener());
 		
-		this.lbBalance = new JLabel("       �ܾ�");
+		this.lbBalance = new JLabel("       잔액");
 		this.tfBalance = new EntJTextFieldForAmount(10);
 		this.tfBalance.setEnabled(false);
 		
-		this.lbTradeDate = new JLabel("       �������");
+		this.lbTradeDate = new JLabel("       기산일자");
 		this.tfTradeDate = new EntJTextFieldForDate(7);
 		
-		this.lbTradeAmount = new JLabel("�Ѿ�");
+		this.lbTradeAmount = new JLabel("총액");
 		this.tfTradeAmount = new EntJTextFieldForAmount(7);
 		
-		this.lbCashAmount = new JLabel("����");
+		this.lbCashAmount = new JLabel("현금");
 		this.tfCashAmount = new EntJTextFieldForAmount(7);
 		
-		this.lbRemarks = new JLabel("���");
+		this.lbRemarks = new JLabel("적요");
 		
 		this.tfRemarks = new EntJTextFieldForRemarks(13);
 		
-		this.btnInsert = new EntJButton("���");
+		this.btnInsert = new EntJButton("출금");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 		
 		this.tbAccountDetail = new EntJTable();
 		
-		//�׸����� ��������� �����Ѵ�.
+		//그리드의 헤더정보를 정의한다.
 		this.tbAccountDetail.entAddTableHeader("trade_sequence", "#", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "�ŷ�����", JLabel.CENTER, 100);
-		this.tbAccountDetail.entAddTableHeader("trade_type_name", "����", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "���", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "�ŷ��ݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "�ܾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("remarks", "���", JLabel.LEFT, 260);
+		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "거래일자", JLabel.CENTER, 100);
+		this.tbAccountDetail.entAddTableHeader("trade_type_name", "종류", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "취소", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "거래금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "잔액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("remarks", "적요", JLabel.LEFT, 260);
 
 		this.panel1.add(lbAccount);
 		this.panel1.add(cbAccount);
@@ -164,7 +162,7 @@ public class A05WithdrawAccountMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle("[A05] ����������");
+		setTitle("[A05] 은행계좌출금");
 		
 	}
 	
@@ -175,10 +173,10 @@ public class A05WithdrawAccountMain extends EntScreenMain {
 		this.transactionKinds = "INSERT";
 		
 		if(this.tfTradeAmount.getValue().equals("0")){
-			showMessageDialog("�ŷ��ݾ��� 0�Դϴ�.");
+			showMessageDialog("거래금액이 0입니다.");
 			return;
 		}
-		int nResult = showConfirmDialog("��� ó���Ͻðڽ��ϱ�?");
+		int nResult = showConfirmDialog("출금 처리하시겠습니까?");
 		if(nResult != 0) return;
 		
 		String strAccountNo = this.cbAccount.entGetCodeOfSelectedItem();
@@ -198,7 +196,7 @@ public class A05WithdrawAccountMain extends EntScreenMain {
 		businessDTO.setIsOneSlip(true);
 		businessDTO.addTransaction("A05201", inputDTO);
 		
-		//�����ŷ��϶��� �ŷ������� �ִ´�.
+		//연동거래일때만 거래유형을 넣는다.
 		if(strLinkType.equals("1")){
 			SlipMasterDTO slipMaster = new SlipMasterDTO();
 			slipMaster.setSlipAmount(bdTradeAmount);

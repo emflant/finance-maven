@@ -50,7 +50,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 		List list = this.transaction.select(AccountDetailDTO.class, query);
 		
 		if(list.isEmpty()){
-			throw new EntException("ÇØ´ç °Å·¡³»¿ªÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			throw new EntException("í•´ë‹¹ ê±°ë˜ë‚´ì—­ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		}
 		
 		return (AccountDetailDTO)list.get(0);
@@ -62,7 +62,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 		List list = this.transaction.select(AccountDetailDTO.class, query);
 		
 		if(list.isEmpty()){
-			throw new EntException("ÇØ´ç °Å·¡³»¿ªÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			throw new EntException("í•´ë‹¹ ê±°ë˜ë‚´ì—­ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		}
 		
 		return (AccountDetailDTO)list.get(0);
@@ -71,7 +71,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 	
 
 	/**
-	 * °èÁÂ ÀÔ±İ µî·Ï
+	 * ê³„ì¢Œ ì…ê¸ˆ ë“±ë¡
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -81,28 +81,28 @@ public class AccountDetailBean implements AccountdetailRemote {
 			//A04DepositAccountMainInsert01DTO inputDTO = (A04DepositAccountMainInsert01DTO)transaction.getMethodParam();
 			
 			
-			//°èÁÂ¿øÀå Á¶È¸
+			//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 			AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 			AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(inputDTO.getAccountNo());
 			BigDecimal bdAfterBalance = accountMasterDTO.getBalance().add(inputDTO.getTotalAmount());
 			
-			//ÃÖÁ¾°Å·¡ÀÏÀÚº¸´Ù ÀüÀÏÀÚ·Î ±â»êÀÏ °Å·¡ºÒ°¡.
+			//ìµœì¢…ê±°ë˜ì¼ìë³´ë‹¤ ì „ì¼ìë¡œ ê¸°ì‚°ì¼ ê±°ë˜ë¶ˆê°€.
 			if(accountMasterDTO.getLastTradeDate().compareTo(inputDTO.getReckonDate()) >= 0){
-				throw new EntException("ÃÖÁ¾°Å·¡ÀÏº¸´Ù ÀÌÀüÀÏÀÚ·Î °Å·¡ºÒ°¡ ÇÕ´Ï´Ù.");
+				throw new EntException("ìµœì¢…ê±°ë˜ì¼ë³´ë‹¤ ì´ì „ì¼ìë¡œ ê±°ë˜ë¶ˆê°€ í•©ë‹ˆë‹¤.");
 			}
 			
-			//ÀüÇ¥¹øÈ£ Ã¤¹ø
+			//ì „í‘œë²ˆí˜¸ ì±„ë²ˆ
 			SlipBean slipBean = new SlipBean(this.transaction);
 			String strSlipNo = slipBean.getSlipNo();
 			
-			//ÇØ´ç±â»êÀÏ±âÁØÀÇ ¸¶Áö¸· °Å·¡³»¿ªÀ» Á¶È¸ÇÑ´Ù.
+			//í•´ë‹¹ê¸°ì‚°ì¼ê¸°ì¤€ì˜ ë§ˆì§€ë§‰ ê±°ë˜ë‚´ì—­ì„ ì¡°íšŒí•œë‹¤.
 			AccountDetailDTO accountDetailOfReckonDate = 
 				getLastAccountDetailOfReckonDate(inputDTO.getAccountNo(), inputDTO.getReckonDate());
 			
 			BigDecimal bdAfterReckonBalance = accountDetailOfReckonDate.getAfterReckonBalance()
 					.add(inputDTO.getTotalAmount());
 			
-			//°Å·¡³»¿ª µî·Ï
+			//ê±°ë˜ë‚´ì—­ ë“±ë¡
 			AccountDetailDTO accountDetail = new AccountDetailDTO(this.transaction);
 			accountDetail.setAccountDetailDTO(inputDTO);
 			
@@ -113,10 +113,10 @@ public class AccountDetailBean implements AccountdetailRemote {
 			accountDetail.setAfterReckonBalance(bdAfterReckonBalance);
 			this.transaction.insert(accountDetail);
 			
-			//°Å·¡³»¿ª ¼öÁ¤
+			//ê±°ë˜ë‚´ì—­ ìˆ˜ì •
 			updateAccountDetailByReckonDate(accountDetail);
 			
-			//°èÁÂ¿øÀå ¼öÁ¤
+			//ê³„ì¢Œì›ì¥ ìˆ˜ì •
 			AccountMasterDTO updateAccountMaster = new AccountMasterDTO(this.transaction);
 			updateAccountMaster.setAccountNo(accountDetail.getAccountNo());
 			updateAccountMaster.setBalance(accountDetail.getAfterTradeBalance());
@@ -124,7 +124,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			accountMasterBean.update(updateAccountMaster);
 			
 			
-			//È¸°èÃ³¸®
+			//íšŒê³„ì²˜ë¦¬
 			SlipMasterDTO slipMaster = new SlipMasterDTO(this.transaction);
 			slipMaster.setSlipNo(strSlipNo);
 			slipMaster.setSlipSequence(transaction.getSlipSeq());
@@ -132,15 +132,15 @@ public class AccountDetailBean implements AccountdetailRemote {
 			slipMaster.setDebtorAmount(accountDetail.getTradeAmount());
 			slipMaster.setCreditAmount(BigDecimal.ZERO);
 			
-			//ÀüÇ¥³»¿ª
-			//D:Â÷º¯ ÀÚ»ê°èÁ¤(°èÁÂÀ¯Çü)
+			//ì „í‘œë‚´ì—­
+			//D:ì°¨ë³€ ìì‚°ê³„ì •(ê³„ì¢Œìœ í˜•)
 			slipMaster.addDebtorAmount(accountMasterDTO.getAccountType()
 					, accountDetail.getTradeAmount(), accountDetail.getCashAmount());
 			
-			//È¸°èÃ³¸®ÇÑ´Ù.
+			//íšŒê³„ì²˜ë¦¬í•œë‹¤.
 			slipBean.execute(slipMaster);
 			
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;
@@ -150,7 +150,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 
 
 	/**
-	 * °èÁÂ Ãâ±İ µî·Ï
+	 * ê³„ì¢Œ ì¶œê¸ˆ ë“±ë¡
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -160,27 +160,27 @@ public class AccountDetailBean implements AccountdetailRemote {
 			//A05WithdrawAccountMainInsert01DTO inputDTO = (A05WithdrawAccountMainInsert01DTO)transaction.getMethodParam();
 			
 			
-			//°èÁÂ¿øÀå Á¶È¸
+			//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 			AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 			AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(inputDTO.getAccountNo());
 			
 			BigDecimal bdAfterBalance = accountMasterDTO.getBalance().subtract(inputDTO.getTotalAmount());
 			
 			if(bdAfterBalance.compareTo(BigDecimal.ZERO) == -1){
-				throw new EntException("Ãâ±İÇÒ ¼ö ¾ø´Â ±İ¾×ÀÔ´Ï´Ù.");
+				throw new EntException("ì¶œê¸ˆí•  ìˆ˜ ì—†ëŠ” ê¸ˆì•¡ì…ë‹ˆë‹¤.");
 			}
 			
-			//ÃÖÁ¾°Å·¡ÀÏÀÚº¸´Ù ÀüÀÏÀÚ·Î ±â»êÀÏ °Å·¡ºÒ°¡.
+			//ìµœì¢…ê±°ë˜ì¼ìë³´ë‹¤ ì „ì¼ìë¡œ ê¸°ì‚°ì¼ ê±°ë˜ë¶ˆê°€.
 			if(accountMasterDTO.getLastTradeDate().compareTo(inputDTO.getReckonDate()) >= 0){
-				throw new EntException("ÃÖÁ¾°Å·¡ÀÏº¸´Ù ÀÌÀüÀÏÀÚ·Î °Å·¡ºÒ°¡ ÇÕ´Ï´Ù.");
+				throw new EntException("ìµœì¢…ê±°ë˜ì¼ë³´ë‹¤ ì´ì „ì¼ìë¡œ ê±°ë˜ë¶ˆê°€ í•©ë‹ˆë‹¤.");
 			}
 			
-			//ÀüÇ¥¹øÈ£ Ã¤¹ø
+			//ì „í‘œë²ˆí˜¸ ì±„ë²ˆ
 			SlipBean slipBean = new SlipBean(this.transaction);
 			String strSlipNo = slipBean.getSlipNo();
 			
 			
-			//ÇØ´ç±â»êÀÏ±âÁØÀÇ ¸¶Áö¸· °Å·¡³»¿ªÀ» Á¶È¸ÇÑ´Ù.
+			//í•´ë‹¹ê¸°ì‚°ì¼ê¸°ì¤€ì˜ ë§ˆì§€ë§‰ ê±°ë˜ë‚´ì—­ì„ ì¡°íšŒí•œë‹¤.
 			AccountDetailDTO accountDetailOfReckonDate = 
 				getLastAccountDetailOfReckonDate(inputDTO.getAccountNo(), inputDTO.getReckonDate());
 			
@@ -188,7 +188,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			.subtract(inputDTO.getTotalAmount());
 			
 			
-			//°Å·¡³»¿ª µî·Ï
+			//ê±°ë˜ë‚´ì—­ ë“±ë¡
 			AccountDetailDTO accountDetail = new AccountDetailDTO(this.transaction);
 			accountDetail.setAccountDetailDTO(inputDTO);
 			accountDetail.setSlipNo(strSlipNo);
@@ -198,10 +198,10 @@ public class AccountDetailBean implements AccountdetailRemote {
 			accountDetail.setAfterReckonBalance(bdAfterReckonBalance);
 			this.transaction.insert(accountDetail);
 			
-			//°Å·¡³»¿ª ¼öÁ¤
+			//ê±°ë˜ë‚´ì—­ ìˆ˜ì •
 			updateAccountDetailByReckonDate(accountDetail);
 			
-			//°èÁÂ¿øÀå ¼öÁ¤
+			//ê³„ì¢Œì›ì¥ ìˆ˜ì •
 			AccountMasterDTO updateAccountMaster = new AccountMasterDTO(this.transaction);
 			updateAccountMaster.setAccountNo(accountDetail.getAccountNo());
 			updateAccountMaster.setBalance(accountDetail.getAfterTradeBalance());
@@ -210,8 +210,8 @@ public class AccountDetailBean implements AccountdetailRemote {
 			accountMasterBean.update(updateAccountMaster);
 			
 			
-			//È¸°èÃ³¸®
-			//ÀüÇ¥¿øÀå
+			//íšŒê³„ì²˜ë¦¬
+			//ì „í‘œì›ì¥
 			SlipMasterDTO slipMaster = new SlipMasterDTO(this.transaction);
 			slipMaster.setSlipNo(strSlipNo);
 			slipMaster.setSlipSequence(transaction.getSlipSeq());
@@ -219,14 +219,14 @@ public class AccountDetailBean implements AccountdetailRemote {
 			slipMaster.setDebtorAmount(BigDecimal.ZERO);
 			slipMaster.setCreditAmount(accountDetail.getTradeAmount());
 			
-			//ÀüÇ¥³»¿ª
-			//C:´ëº¯ ÀÚ»ê°èÁ¤(°èÁÂÀ¯Çü)
+			//ì „í‘œë‚´ì—­
+			//C:ëŒ€ë³€ ìì‚°ê³„ì •(ê³„ì¢Œìœ í˜•)
 			slipMaster.addCreditAmount(accountMasterDTO.getAccountType(), accountDetail.getTradeAmount(), accountDetail.getCashAmount());
 			
-			//È¸°èÃ³¸®ÇÑ´Ù.
+			//íšŒê³„ì²˜ë¦¬í•œë‹¤.
 			slipBean.execute(slipMaster);
 			
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;
@@ -235,7 +235,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 	
 	
 	/**
-	 * ½Å¿ëÄ«µå ÁöÃâ Ã³¸®
+	 * ì‹ ìš©ì¹´ë“œ ì§€ì¶œ ì²˜ë¦¬
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -245,23 +245,23 @@ public class AccountDetailBean implements AccountdetailRemote {
 			
 			//A03CreditCardPaymentMainInsert01DTO inputDTO = (A03CreditCardPaymentMainInsert01DTO)transaction.getMethodParam();
 			
-			//°èÁÂ¿øÀå Á¶È¸
+			//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 			AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 			AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(inputDTO.getAccountNo());
 			
-			//È¸°èÃ³¸®
+			//íšŒê³„ì²˜ë¦¬
 			SlipMasterDTO slipMasterDTO = new SlipMasterDTO(this.transaction);
 			slipMasterDTO.setSlipMasterDTO(inputDTO);
 			SlipBean slipBean = new SlipBean(this.transaction);
 			slipBean.execute(slipMasterDTO);
 			
 			
-			//ÃÖÁ¾°áÁ¦ÀÏÀÚÀÌÀü°Å·¡¸¸ °¡´ÉÇÏ°Ô ÇÑ´Ù.
+			//ìµœì¢…ê²°ì œì¼ìì´ì „ê±°ë˜ë§Œ ê°€ëŠ¥í•˜ê²Œ í•œë‹¤.
 			if(accountMasterDTO.getLastTradeDate().compareTo(inputDTO.getReckonDate()) >= 0){
-				throw new EntException("°áÁ¦ÀÏ ÀÌÀü³¯Â¥·Î °Å·¡ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+				throw new EntException("ê²°ì œì¼ ì´ì „ë‚ ì§œë¡œ ê±°ë˜í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 			}
 			
-			//ÇØ´ç±â»êÀÏ±âÁØÀÇ ¸¶Áö¸· °Å·¡³»¿ªÀ» Á¶È¸ÇÑ´Ù.
+			//í•´ë‹¹ê¸°ì‚°ì¼ê¸°ì¤€ì˜ ë§ˆì§€ë§‰ ê±°ë˜ë‚´ì—­ì„ ì¡°íšŒí•œë‹¤.
 			AccountDetailDTO accountDetailOfReckonDate = 
 				getLastAccountDetailOfReckonDate(inputDTO.getAccountNo(), inputDTO.getReckonDate());
 			
@@ -271,7 +271,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			BigDecimal bdAfterBalance = accountMasterDTO.getBalance().subtract(inputDTO.getTotalAmount());
 			
 			
-			//°Å·¡³»¿ª µî·Ï
+			//ê±°ë˜ë‚´ì—­ ë“±ë¡
 			AccountDetailDTO accountNewDetail = new AccountDetailDTO(this.transaction);
 			accountNewDetail.setAccountDetailDTO(inputDTO);
 			accountNewDetail.setSlipNo(slipMasterDTO.getSlipNo());
@@ -282,12 +282,12 @@ public class AccountDetailBean implements AccountdetailRemote {
 			this.transaction.insert(accountNewDetail);
 			
 			
-			//°Å·¡³»¿ª ¼öÁ¤
+			//ê±°ë˜ë‚´ì—­ ìˆ˜ì •
 			updateAccountDetailByReckonDate(accountNewDetail);
 			
 			
 						
-			//°èÁÂ¿øÀå ¼öÁ¤
+			//ê³„ì¢Œì›ì¥ ìˆ˜ì •
 			AccountMasterDTO updateAccountMaster = new AccountMasterDTO(this.transaction);
 			updateAccountMaster.setBalance(accountNewDetail.getAfterTradeBalance());
 			updateAccountMaster.setLastTradeSequence(accountNewDetail.getTradeSequence());
@@ -296,7 +296,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			
 			
 			
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;
@@ -346,7 +346,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 	
 	public AccountDetailDTO getLastAccountDetailOfReckonDate(String strAccountNo, String strReckonDate) throws EntException{
 		
-		//ÇØ´ç ±â»êÀÏÀÇ ¸¶Áö¸·°Å·¡ÀÇ °Å·¡ÈÄ ÀÜ¾×À» ±¸ÇÑ´Ù.
+		//í•´ë‹¹ ê¸°ì‚°ì¼ì˜ ë§ˆì§€ë§‰ê±°ë˜ì˜ ê±°ë˜í›„ ì”ì•¡ì„ êµ¬í•œë‹¤.
 		StringBuilder sbQuery = new StringBuilder(1024);
 		
 		sbQuery.append(" select X.*                                   ");
@@ -373,7 +373,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 		List lResult = this.transaction.select(AccountDetailDTO.class, sbQuery);
 		
 		if(lResult.isEmpty()){
-			throw new EntException("Àû¾îµµ ÇÏ³ªÀÇ °Å·¡°¡ Á¸ÀçÇØ¾ß ÇÕ´Ï´Ù.<br/> µ¥ÀÌÅÍ¸¦ È®ÀÎÇÏ¼¼¿ä.");
+			throw new EntException("ì ì–´ë„ í•˜ë‚˜ì˜ ê±°ë˜ê°€ ì¡´ì¬í•´ì•¼ í•©ë‹ˆë‹¤.<br/> ë°ì´í„°ë¥¼ í™•ì¸í•˜ì„¸ìš”.");
 		}
 
 		return (AccountDetailDTO)lResult.get(0);
@@ -381,7 +381,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 
 	
 	/**
-	 * ½Å¿ëÄ«µå ÀÏ°ıÁöÃâ Ã³¸®
+	 * ì‹ ìš©ì¹´ë“œ ì¼ê´„ì§€ì¶œ ì²˜ë¦¬
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -393,7 +393,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			HttpUrlConnection httpUrl = new HttpUrlConnection();
 			httpUrl.updateOneMoney(key, "1");
 			
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;
@@ -402,7 +402,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 	
 
 	/**
-	 * ½Å¿ëÄ«µå ÀÏ°ıÁöÃâ Ã³¸®
+	 * ì‹ ìš©ì¹´ë“œ ì¼ê´„ì§€ì¶œ ì²˜ë¦¬
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -414,7 +414,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			HttpUrlConnection httpUrl = new HttpUrlConnection();
 			httpUrl.updateOneMoney(key, "0");
 			
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;
@@ -423,18 +423,18 @@ public class AccountDetailBean implements AccountdetailRemote {
 	
 
 	/**
-	 * ½Å¿ëÄ«µå ÀÌ¿ë´ë±İ °áÁ¦(»óÈ¯) Ã³¸®
+	 * ì‹ ìš©ì¹´ë“œ ì´ìš©ëŒ€ê¸ˆ ê²°ì œ(ìƒí™˜) ì²˜ë¦¬
 	 * @param transaction
 	 * @throws EntException
 	 */
 	public void creditCardRepayment(A06CreditCardRepaymentMainInsert01DTO inputDTO) throws EntException  {
 		
 		try {
-			//ÀüÇ¥¹øÈ£ Ã¤¹ø
+			//ì „í‘œë²ˆí˜¸ ì±„ë²ˆ
 			SlipBean slipBean = new SlipBean(this.transaction);
 			String strSlipNo = slipBean.getSlipNo();
 			
-			//ÀÔ·Â°ª Á¤ÀÇ
+			//ì…ë ¥ê°’ ì •ì˜
 			//A06CreditCardRepaymentMainInsert01DTO inputDTO = (A06CreditCardRepaymentMainInsert01DTO)transaction.getMethodParam();
 			
 			StringBuilder sbQuery = new StringBuilder(256);
@@ -448,22 +448,22 @@ public class AccountDetailBean implements AccountdetailRemote {
 			String strMinRepaymentDate = (String)this.transaction.selectToTableModel(sbQuery).getValueAt(0, 0);
 			
 			if(strMinRepaymentDate.compareTo(inputDTO.getReckonDate()) >= 0){
-				throw new EntException(strMinRepaymentDate+"ÀÏÀÚ ÀÌÈÄ¿¡ ÀÌ¿ë´ë±İ °áÁ¦ °¡´ÉÇÕ´Ï´Ù.");
+				throw new EntException(strMinRepaymentDate+"ì¼ì ì´í›„ì— ì´ìš©ëŒ€ê¸ˆ ê²°ì œ ê°€ëŠ¥í•©ë‹ˆë‹¤.");
 			}
 			
-			//°èÁÂ¿øÀå Á¶È¸
+			//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 			AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 			AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(inputDTO.getAccountNo());
 			BigDecimal bdAfterBalance = accountMasterDTO.getBalance().add(inputDTO.getTotalAmount());
 			
-			//ÇØ´ç±â»êÀÏ±âÁØÀÇ ¸¶Áö¸· °Å·¡³»¿ªÀ» Á¶È¸ÇÑ´Ù.
+			//í•´ë‹¹ê¸°ì‚°ì¼ê¸°ì¤€ì˜ ë§ˆì§€ë§‰ ê±°ë˜ë‚´ì—­ì„ ì¡°íšŒí•œë‹¤.
 			AccountDetailDTO accountDetailOfReckonDate = 
 				getLastAccountDetailOfReckonDate(inputDTO.getAccountNo(), inputDTO.getReckonDate());
 			
 			BigDecimal bdAfterReckonBalance = accountDetailOfReckonDate.getAfterReckonBalance()
 				.add(inputDTO.getTotalAmount());
 			
-			//°Å·¡³»¿ª µî·Ï
+			//ê±°ë˜ë‚´ì—­ ë“±ë¡
 			AccountDetailDTO accountDetail = new AccountDetailDTO(this.transaction);
 			accountDetail.setAccountDetailDTO(inputDTO);
 			accountDetail.setSlipNo(strSlipNo);
@@ -473,11 +473,11 @@ public class AccountDetailBean implements AccountdetailRemote {
 			accountDetail.setAfterReckonBalance(accountDetailOfReckonDate.getAfterReckonBalance());
 			transaction.insert(accountDetail);
 			
-			//°Å·¡³»¿ª ¼öÁ¤!!
+			//ê±°ë˜ë‚´ì—­ ìˆ˜ì •!!
 			updateAccountDetailByReckonDate(accountDetail);
 			
 			
-			//°èÁÂ¿øÀåÀ» ¼öÁ¤ÇÑ´Ù.
+			//ê³„ì¢Œì›ì¥ì„ ìˆ˜ì •í•œë‹¤.
 			AccountMasterDTO updateAccountMaster = new AccountMasterDTO(this.transaction);
 			updateAccountMaster.setAccountNo(accountDetail.getAccountNo());
 			updateAccountMaster.setBalance(accountDetail.getAfterTradeBalance());
@@ -487,8 +487,8 @@ public class AccountDetailBean implements AccountdetailRemote {
 			accountMasterBean.updateLastTradeDate(updateAccountMaster);
 
 
-			//È¸°èÃ³¸®
-			//ÀüÇ¥¿øÀå
+			//íšŒê³„ì²˜ë¦¬
+			//ì „í‘œì›ì¥
 			SlipMasterDTO slipMaster = new SlipMasterDTO(this.transaction);
 			slipMaster.setSlipNo(strSlipNo);
 			slipMaster.setSlipSequence(transaction.getSlipSeq());
@@ -497,16 +497,16 @@ public class AccountDetailBean implements AccountdetailRemote {
 			slipMaster.setCreditAmount(BigDecimal.ZERO);
 			
 			
-			//ÀüÇ¥³»¿ª
-			//C:´ëº¯ ºÎÃ¤°èÁ¤(½Å¿ëÄ«µå)
+			//ì „í‘œë‚´ì—­
+			//C:ëŒ€ë³€ ë¶€ì±„ê³„ì •(ì‹ ìš©ì¹´ë“œ)
 			slipMaster.addDebtorAmount(accountMasterDTO.getAccountType()
 					, inputDTO.getTotalAmount(), inputDTO.getCashAmount());
 			
 			
-			//È¸°èÃ³¸®ÇÑ´Ù.
+			//íšŒê³„ì²˜ë¦¬í•œë‹¤.
 			slipBean.execute(slipMaster);
 			
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;
@@ -514,7 +514,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 	}	
 
 	/**
-	 * ½Å¿ëÄ«µå °áÁ¦(»óÈ¯) ´ë»ó Á¶È¸
+	 * ì‹ ìš©ì¹´ë“œ ê²°ì œ(ìƒí™˜) ëŒ€ìƒ ì¡°íšŒ
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -522,10 +522,10 @@ public class AccountDetailBean implements AccountdetailRemote {
 		
 		try {
 			
-			//ÀÔ·Â°ª Á¤ÀÇ
+			//ì…ë ¥ê°’ ì •ì˜
 			//A06CreditCardRepaymentMainSelect01DTO inputDTO = (A06CreditCardRepaymentMainSelect01DTO)transaction.getMethodParam();
 			
-			//°èÁÂ¿øÀå Á¶È¸
+			//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 			AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 			AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(inputDTO.getAccountNo());
 			
@@ -570,7 +570,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			
 			transaction.addResult(list);
 			transaction.addResult((String)list2.getValueAt(0, 0));
-			//transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			//transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;
@@ -579,7 +579,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 	
 	
 	/**
-	 * Çö±İ ÀÔÃâ±İ µî·Ï
+	 * í˜„ê¸ˆ ì…ì¶œê¸ˆ ë“±ë¡
 	 * @param inputDTO
 	 * @throws EntException
 	 */
@@ -590,7 +590,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			slipMaster.setDefaultField(transaction);
 			slipMaster.setSlipAmount(inputDTO.getTotalAmount());
 			
-			//¼öÀÍ°èÁ¤ÀÌ¸é ´ëº¯¿¡ °Å·¡±İ¾× ¼ÂÆÃ
+			//ìˆ˜ìµê³„ì •ì´ë©´ ëŒ€ë³€ì— ê±°ë˜ê¸ˆì•¡ ì…‹íŒ…
 			if(inputDTO.getInOutType().equals("1")){
 				slipMaster.setDebtorAmount(BigDecimal.ZERO);
 				slipMaster.setCreditAmount(inputDTO.getTotalAmount());
@@ -598,7 +598,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 						, inputDTO.getTotalAmount(), inputDTO.getTotalAmount());
 				
 			} 
-			//ºñ¿ë°èÁ¤ÀÌ¸é Â÷º¯¿¡ °Å·¡±İ¾× ¼ÂÆÃ
+			//ë¹„ìš©ê³„ì •ì´ë©´ ì°¨ë³€ì— ê±°ë˜ê¸ˆì•¡ ì…‹íŒ…
 			else {
 				slipMaster.setDebtorAmount(inputDTO.getTotalAmount());
 				slipMaster.setCreditAmount(BigDecimal.ZERO);
@@ -615,7 +615,7 @@ public class AccountDetailBean implements AccountdetailRemote {
 			SlipBean slipBean = new SlipBean(this.transaction);
 			slipBean.execute(slipMaster);
 			
-			this.transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			this.transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);

@@ -80,29 +80,28 @@ public class B04WholeAccountInquiryFromSlipDetail extends EntScreenMain {
 		this.southPanel.setBackground(Color.WHITE);
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
-		this.lbAccountType = new JLabel("��������");
+		this.lbAccountType = new JLabel("계좌유형");
 		this.cbAccountType = new JComboBox();
 		this.cbAccountType.addActionListener(new CbAccountChangeListener());
 		
-		this.lbTradeDate = new JLabel("��������");
+		this.lbTradeDate = new JLabel("기준일자");
 		this.tfTradeDate = new JTextField(7);
 		this.tfTradeDate.setText(EntDate.getToday());
 		this.tfTradeDate.setHorizontalAlignment(JTextField.CENTER);
 
 		this.tbSlipDetail = new EntJTable();
 		
-		this.btnInsert = new JButton("���");
+		this.btnInsert = new JButton("등록");
 		//this.btnInsert.addActionListener(new InsertButtonListener());
-		this.btnDelete = new JButton("����");
+		this.btnDelete = new JButton("삭제");
 		//this.btnDelete.addActionListener(new DeleteButtonListener());
 
-
-		//��ǥ������ �׸����� ��������� �����Ѵ�.
-		this.tbSlipDetail.entAddTableHeader("account_type", "�����ڵ�", JLabel.CENTER, 50);
-		this.tbSlipDetail.entAddTableHeader("account_type_name", "����", JLabel.LEFT, 120);
-		this.tbSlipDetail.entAddTableHeader("bs_pl_detail_type_name", "����", JLabel.CENTER, 30);
-		this.tbSlipDetail.entAddTableHeader("debtor_total_amount", "�����ݾ�", JLabel.RIGHT, 200);
-		this.tbSlipDetail.entAddTableHeader("credit_total_amount", "�뺯�ݾ�", JLabel.RIGHT, 200);
+		//전표내역의 그리드의 헤더정보를 정의한다.
+		this.tbSlipDetail.entAddTableHeader("account_type", "계정코드", JLabel.CENTER, 50);
+		this.tbSlipDetail.entAddTableHeader("account_type_name", "종류", JLabel.LEFT, 120);
+		this.tbSlipDetail.entAddTableHeader("bs_pl_detail_type_name", "종류", JLabel.CENTER, 30);
+		this.tbSlipDetail.entAddTableHeader("debtor_total_amount", "차변금액", JLabel.RIGHT, 200);
+		this.tbSlipDetail.entAddTableHeader("credit_total_amount", "대변금액", JLabel.RIGHT, 200);
 		
 		this.panel1.add(lbAccountType);
 		this.panel1.add(cbAccountType);
@@ -120,7 +119,7 @@ public class B04WholeAccountInquiryFromSlipDetail extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		//this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle(this.userId + "�� �Ϻ���ǥ����");
+		setTitle(this.userId + "의 일별전표내역");
 		
 	}
 	

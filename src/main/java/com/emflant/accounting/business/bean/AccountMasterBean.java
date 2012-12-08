@@ -44,7 +44,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 		List result = this.transaction.select(AccountMasterDTO.class, sb);
 
 		if(result.isEmpty()){
-			throw new EntException("ÇØ´ç°èÁÂ¹øÈ£°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			throw new EntException("í•´ë‹¹ê³„ì¢Œë²ˆí˜¸ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		}
 		
 		return (AccountMasterDTO)result.get(0);
@@ -74,7 +74,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 	
 
 	/**
-	 * Ãâ±İ°¡´É°èÁÂÁ¶È¸
+	 * ì¶œê¸ˆê°€ëŠ¥ê³„ì¢Œì¡°íšŒ
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -107,7 +107,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 	
 
 	/**
-	 * ÀÔ±İ°¡´É°èÁÂÁ¶È¸
+	 * ì…ê¸ˆê°€ëŠ¥ê³„ì¢Œì¡°íšŒ
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -140,7 +140,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 	
 	
 	/**
-	 * ÇØ´ç »ç¿ëÀÚÀÇ ½Å¿ëÄ«µå, Ã¼Å©Ä«µå³»¿ªÀ» Á¶È¸ÇÑ´Ù.
+	 * í•´ë‹¹ ì‚¬ìš©ìì˜ ì‹ ìš©ì¹´ë“œ, ì²´í¬ì¹´ë“œë‚´ì—­ì„ ì¡°íšŒí•œë‹¤.
 	 * @param userId
 	 * @return
 	 * @throws EntException
@@ -160,7 +160,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 	
 
 	/**
-	 * ÇØ´ç »ç¿ëÀÚÀÇ ½Å¿ëÄ«µå, Ã¼Å©Ä«µå³»¿ªÀ» Á¶È¸ÇÑ´Ù.
+	 * í•´ë‹¹ ì‚¬ìš©ìì˜ ì‹ ìš©ì¹´ë“œ, ì²´í¬ì¹´ë“œë‚´ì—­ì„ ì¡°íšŒí•œë‹¤.
 	 * @param userId
 	 * @return
 	 * @throws EntException
@@ -180,7 +180,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 	
 
 	/**
-	 * ÇØ´ç »ç¿ëÀÚÀÇ ¿¹±İ°èÁÂ ³»¿ªÀ» Á¶È¸ÇÑ´Ù.
+	 * í•´ë‹¹ ì‚¬ìš©ìì˜ ì˜ˆê¸ˆê³„ì¢Œ ë‚´ì—­ì„ ì¡°íšŒí•œë‹¤.
 	 * @param userId
 	 * @return
 	 * @throws EntException
@@ -199,7 +199,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 	
 
 	/**
-	 * ÇØ´ç »ç¿ëÀÚÀÇ ¿¹±İ°èÁÂ ³»¿ªÀ» Á¶È¸ÇÑ´Ù.
+	 * í•´ë‹¹ ì‚¬ìš©ìì˜ ì˜ˆê¸ˆê³„ì¢Œ ë‚´ì—­ì„ ì¡°íšŒí•œë‹¤.
 	 * @param userId
 	 * @return
 	 * @throws EntException
@@ -218,7 +218,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 	}
 	
 	/**
-	 * ½Å±Ô°èÁÂ¹øÈ£ Ã¤¹ø
+	 * ì‹ ê·œê³„ì¢Œë²ˆí˜¸ ì±„ë²ˆ
 	 * @param sequenceType
 	 * @return
 	 * @throws EntException
@@ -257,7 +257,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 			sb.append("FROM account_master T WHERE user_id = ");
 			sb.append(EntCommon.convertQuery(userId));
 			sb.append(" UNION ALL ");
-			sb.append("SELECT 'ÃÑ¾×', NULL, user_id, '99' AS account_type, NULL AS account_status");
+			sb.append("SELECT 'ì´ì•¡', NULL, user_id, '99' AS account_type, NULL AS account_status");
 			sb.append(", format(SUM(balance),0) as format_balance, SUM(balance) as balance, NULL, NULL, NULL ");
 			sb.append(" FROM account_master WHERE user_id = ");
 			sb.append(EntCommon.convertQuery(userId));
@@ -275,7 +275,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 
 	
 	/**
-	 * °èÁÂ½Å±Ôµî·Ï
+	 * ê³„ì¢Œì‹ ê·œë“±ë¡
 	 * @param transaction
 	 * @throws EntException
 	 */
@@ -285,13 +285,13 @@ public class AccountMasterBean implements AccountmasterRemote {
 
 			//A01AccountMasterMainInsert01DTO inputDTO = (A01AccountMasterMainInsert01DTO)transaction.getMethodParam();
 			
-			//ÀÔ·Â°ªÃ¼Å©
+			//ì…ë ¥ê°’ì²´í¬
 			EntCommon.isNull(inputDTO);
 			
 			String strNewAccountNo = createNewAccountNoByAccountType(inputDTO.getAccountType());
 			int nLastTradeSequence = 0;
 			
-			//°Å·¡³»¿ª µî·Ï
+			//ê±°ë˜ë‚´ì—­ ë“±ë¡
 			AccountDetailDTO accountDetailDTO = new AccountDetailDTO(this.transaction);
 			accountDetailDTO.setAccountDetailDTO(inputDTO);
 			accountDetailDTO.setAccountNo(strNewAccountNo);
@@ -305,32 +305,32 @@ public class AccountMasterBean implements AccountmasterRemote {
 			accountDetailDTO.setNonCashAmount(BigDecimal.ZERO);
 			accountDetailDTO.setAfterTradeBalance(BigDecimal.ZERO);
 			accountDetailDTO.setAfterReckonBalance(BigDecimal.ZERO);
-			accountDetailDTO.setRemarks("°èÁÂ½Å±Ô");
+			accountDetailDTO.setRemarks("ê³„ì¢Œì‹ ê·œ");
 			
 			this.transaction.insert(accountDetailDTO);
 			
 			if(inputDTO.getTotalAmount().compareTo(BigDecimal.ZERO) == 1){
 				
-				//ÀüÇ¥¹øÈ£ Ã¤¹ø
+				//ì „í‘œë²ˆí˜¸ ì±„ë²ˆ
 				SlipBean slipBean = new SlipBean(this.transaction);
 				String strSlipNo = slipBean.getSlipNo();
 				int nSlipSeq = transaction.getSlipSeq();
 				
-				//ÀüÇ¥»ı¼º
+				//ì „í‘œìƒì„±
 				SlipMasterDTO slipMasterDTO = new SlipMasterDTO(this.transaction);
 				slipMasterDTO.setSlipMasterDTO(inputDTO);
 				
 				slipMasterDTO.setSlipNo(strSlipNo);
 				slipMasterDTO.setSlipSequence(nSlipSeq);
 				
-				//ÀüÇ¥³»¿ª
-				//C:Â÷º¯ ÀÚ»ê°èÁ¤(º¸Åë¿¹±İ)
+				//ì „í‘œë‚´ì—­
+				//C:ì°¨ë³€ ìì‚°ê³„ì •(ë³´í†µì˜ˆê¸ˆ)
 				slipMasterDTO.addDebtorAmount(inputDTO.getAccountType(), inputDTO.getTotalAmount(), inputDTO.getCashAmount());
 				
-				//È¸°èÃ³¸®ÇÑ´Ù.
+				//íšŒê³„ì²˜ë¦¬í•œë‹¤.
 				slipBean.execute(slipMasterDTO);
 				
-				//ÀÔ±İ°Å·¡³»¿ª ¸¸µç´Ù.
+				//ì…ê¸ˆê±°ë˜ë‚´ì—­ ë§Œë“ ë‹¤.
 				AccountDetailDTO accountDetailDTO2 = new AccountDetailDTO(this.transaction);
 				accountDetailDTO2.setAccountDetailDTO(inputDTO);
 				
@@ -345,20 +345,20 @@ public class AccountMasterBean implements AccountmasterRemote {
 				accountDetailDTO2.setNonCashAmount(inputDTO.getTotalAmount().subtract(inputDTO.getCashAmount()));
 				accountDetailDTO2.setAfterTradeBalance(inputDTO.getTotalAmount());
 				accountDetailDTO2.setAfterReckonBalance(inputDTO.getTotalAmount());
-				accountDetailDTO2.setRemarks("°èÁÂ½Å±Ô");
+				accountDetailDTO2.setRemarks("ê³„ì¢Œì‹ ê·œ");
 				
 				this.transaction.insert(accountDetailDTO2);
 				
 			}
 			
-			//°èÁÂ¿øÀå µî·Ï
+			//ê³„ì¢Œì›ì¥ ë“±ë¡
 			AccountMasterDTO accountMasterDTO = new AccountMasterDTO(this.transaction);
 			accountMasterDTO.setAccountMasterDTO(inputDTO);
 			accountMasterDTO.setAccountNo(strNewAccountNo);
 			accountMasterDTO.setLastTradeSequence(nLastTradeSequence);
 			transaction.insert(accountMasterDTO);
 			
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·Ï µÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
@@ -383,7 +383,7 @@ public class AccountMasterBean implements AccountmasterRemote {
 		sb.append(" WHERE account_no = ");
 		sb.append(EntCommon.convertQuery(accountMaster.getAccountNo()));
 		int result = transaction.update(sb);
-		EntLogger.debug(result + "°Ç ¼öÁ¤Çß½À´Ï´Ù.");
+		EntLogger.debug(result + "ê±´ ìˆ˜ì •í–ˆìŠµë‹ˆë‹¤.");
 	}
 
 	
@@ -404,6 +404,6 @@ public class AccountMasterBean implements AccountmasterRemote {
 		sb.append(" WHERE account_no = ");
 		sb.append(EntCommon.convertQuery(accountMaster.getAccountNo()));
 		int result = this.transaction.update(sb);
-		EntLogger.debug(result + "°Ç ¼öÁ¤Çß½À´Ï´Ù.");
+		EntLogger.debug(result + "ê±´ ìˆ˜ì •í–ˆìŠµë‹ˆë‹¤.");
 	}
 }

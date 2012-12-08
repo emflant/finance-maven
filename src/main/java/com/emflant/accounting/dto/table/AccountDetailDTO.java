@@ -50,9 +50,9 @@ public class AccountDetailDTO extends AccountDetail{
 		this.slipNo 				= null;
 		this.slipSeq 				= null;
 		this.reckonDate 			= a03CreditCardPaymentMainInsert01DTO.getReckonDate();
-		this.inoutType 				= "2";		//2:Ãâ±İ
-		this.tradeType 				= "04";		//04:½ÂÀÎ
-		this.cancelType 			= "0";		//0:Á¤»ó
+		this.inoutType 				= "2";		//2:ì¶œê¸ˆ
+		this.tradeType 				= "04";		//04:ìŠ¹ì¸
+		this.cancelType 			= "0";		//0:ì •ìƒ
 		this.tradeAmount 			= a03CreditCardPaymentMainInsert01DTO.getTotalAmount();
 		this.cashAmount 			= a03CreditCardPaymentMainInsert01DTO.getCashAmount();
 		this.nonCashAmount 			= a03CreditCardPaymentMainInsert01DTO.getTotalAmount().subtract(a03CreditCardPaymentMainInsert01DTO.getCashAmount());

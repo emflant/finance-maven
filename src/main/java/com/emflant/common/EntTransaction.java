@@ -29,7 +29,7 @@ public class EntTransaction {
 	private List results;
 	private EntMessage message;
 	private boolean isRemoveMessage;
-	private String businessBaseDataTimeMillis;		//business °¡ ½ÃÀÛµÈ ÀÏ½Ã. ·Î±×½×ÀÏ¶§ ÇÊ¿ä.
+	private String businessBaseDataTimeMillis;		//business ê°€ ì‹œì‘ëœ ì¼ì‹œ. ë¡œê·¸ìŒ“ì¼ë•Œ í•„ìš”.
 	private String systemDateTimeMillis;
 	private String systemDate;
 	private String systemTimeMillis;
@@ -77,7 +77,7 @@ public class EntTransaction {
 			List<TradeMasterDTO> lResult = this.entQuery.select(TradeMasterDTO.class, sbQuery);
 			
 			if(lResult.isEmpty()){
-				throw new EntException("["+this.tradeCode+"] ÇØ´ç °Å·¡ÄÚµå°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+				throw new EntException("["+this.tradeCode+"] í•´ë‹¹ ê±°ë˜ì½”ë“œê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			}
 			
 			TradeMasterDTO tradeMasterDTO = lResult.get(0);

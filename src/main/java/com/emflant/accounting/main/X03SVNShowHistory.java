@@ -62,7 +62,7 @@ public class X03SVNShowHistory extends EntScreenMain {
 		this.centerPanel.setBackground(Color.WHITE);
 		this.centerPanel.setLayout(new BorderLayout());
 		
-		this.lbCodeType = new JLabel("���̺�");
+		this.lbCodeType = new JLabel("테이블");
 		this.cbBeanType = new EntJComboBox();
 		//this.cbBeanType.addActionListener(new X03ChangeBeanTypeComboBoxListener());
 
@@ -76,9 +76,9 @@ public class X03SVNShowHistory extends EntScreenMain {
 		
 		this.tbCodeDetailList = new EntJTable();
 		
-		this.tbCodeDetailList.entAddTableHeader("date", "��¥", JLabel.CENTER, 150);
-		this.tbCodeDetailList.entAddTableHeader("version", "����", JLabel.LEFT, 30);
-		this.tbCodeDetailList.entAddTableHeader("comment", "�޸�", JLabel.LEFT, 500);
+		this.tbCodeDetailList.entAddTableHeader("date", "날짜", JLabel.CENTER, 150);
+		this.tbCodeDetailList.entAddTableHeader("version", "버젼", JLabel.LEFT, 30);
+		this.tbCodeDetailList.entAddTableHeader("comment", "메모", JLabel.LEFT, 500);
 		
 		
 		this.panel1.add(lbCodeType);
@@ -100,7 +100,7 @@ public class X03SVNShowHistory extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
-		setTitle("[X03] svn �̷� ��ȸ");
+		setTitle("[X03] svn 이력 조회");
 
 	}
 	

@@ -77,29 +77,29 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		
-		this.lbStatus = new JLabel("ó������");
+		this.lbStatus = new JLabel("처리구분");
 		this.cbStatus = new EntJComboBox();
 		this.cbStatus.addActionListener(new CbAccountChangeListener());
 		
-		this.btnSearch = new JButton("��ȸ");
+		this.btnSearch = new JButton("조회");
 		this.btnSearch.addActionListener(new SearchButtonListener());
-		this.btnInsert = new JButton("��ġ����");
+		this.btnInsert = new JButton("배치실행");
 		this.btnInsert.addActionListener(new InsertButtonListener());
-		this.btnUpdate = new JButton("�ʱ�ȭ����");
+		this.btnUpdate = new JButton("초기화실행");
 		this.btnUpdate.addActionListener(new UpdateButtonListener());
 		
 		this.tbAccountDetail = new EntJTable();
 		
-		//�׸����� ��������� �����Ѵ�.
+		//그리드의 헤더정보를 정의한다.
 		this.tbAccountDetail.entAddTableHeader("key", "key", JLabel.CENTER, 120);
-		this.tbAccountDetail.entAddTableHeader("status", "����", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("trade_type", "���", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("credit_card", "�ſ�ī��", JLabel.CENTER, 120);
-		this.tbAccountDetail.entAddTableHeader("reckon_date", "�ŷ�����", JLabel.CENTER, 120);
-		this.tbAccountDetail.entAddTableHeader("reckon_time", "�ð�", JLabel.CENTER, 80);
-		this.tbAccountDetail.entAddTableHeader("total_amount", "��ü�ݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("cash_amount", "���ݱݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("remarks", "���", JLabel.LEFT, 260);
+		this.tbAccountDetail.entAddTableHeader("status", "구분", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("trade_type", "비용", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("credit_card", "신용카드", JLabel.CENTER, 120);
+		this.tbAccountDetail.entAddTableHeader("reckon_date", "거래일자", JLabel.CENTER, 120);
+		this.tbAccountDetail.entAddTableHeader("reckon_time", "시간", JLabel.CENTER, 80);
+		this.tbAccountDetail.entAddTableHeader("total_amount", "전체금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("cash_amount", "현금금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("remarks", "적요", JLabel.LEFT, 260);
 
 		this.panel1.add(lbStatus);
 		this.panel1.add(cbStatus);
@@ -114,7 +114,7 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle("[D01] �ϰ�ī�����");
+		setTitle("[D01] 일괄카드승인");
 		
 	}
 	
@@ -122,7 +122,7 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 	
 	public void insert(){
 		
-		int nResult = showConfirmDialog("�ϰ�ó�� �Ͻðڽ��ϱ�?");
+		int nResult = showConfirmDialog("일괄처리 하시겠습니까?");
 		if(nResult != 0) return;
 		
 		DefaultTableModel model = (DefaultTableModel)this.tbAccountDetail.getModel();
@@ -140,9 +140,9 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 			if(!strStatus.equals("0")) continue;
 			
 			String strCreditCard = model.getValueAt(i, model.findColumn("credit_card")).toString();
-			if(strCreditCard.equals("��Ƽī��")){
+			if(strCreditCard.equals("씨티카드")){
 				inputDTO.setAccountNo("2100000012");
-			} else if(strCreditCard.equals("�Ե�ī��")){
+			} else if(strCreditCard.equals("롯데카드")){
 				inputDTO.setAccountNo("2100000013");
 			}
 			
@@ -152,16 +152,16 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 			inputDTO.setCashAmount(new BigDecimal(model.getValueAt(i, model.findColumn("cash_amount")).toString()));
 			inputDTO.setRemarks(model.getValueAt(i, model.findColumn("remarks")).toString());
 			
-			//ī�����ó���Ѵ�.
+			//카드승인처리한다.
 			boolean result = insert(inputDTO, model.getValueAt(i, model.findColumn("key")).toString());
 			
 			if(result) nResultCnt++;
 		}
 		
 		if(nResultCnt == 0){
-			showMessageDialog("ó���� ����� ����ϴ�.");
+			showMessageDialog("처리한 대상이 없습니다.");
 		} else {
-			showMessageDialog("���������� "+nResultCnt+"�� ó���߽��ϴ�.");
+			showMessageDialog("정상적으로 "+nResultCnt+"건 처리했습니다.");
 		}
 		
 		
@@ -176,7 +176,7 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 		this.transactionKinds = "INSERT";
 		
 		if(inputDTO.getTotalAmount().compareTo(BigDecimal.ZERO) == 0){
-			showMessageDialog("�ŷ��ݾ��� 0�Դϴ�.");
+			showMessageDialog("거래금액이 0입니다.");
 			return false;
 		}
 		
@@ -187,7 +187,7 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 		
 		BigDecimal bdNonCashAmount = inputDTO.getTotalAmount().subtract(inputDTO.getCashAmount());
 		
-		//�����ŷ��϶��� �ŷ������� �ִ´�.
+		//연동거래일때만 거래유형을 넣는다.
 		if(bdNonCashAmount.compareTo(BigDecimal.ZERO) == 1){
 			SlipMasterDTO slipMaster = new SlipMasterDTO();
 			slipMaster.setSlipAmount(bdNonCashAmount);
@@ -203,7 +203,7 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 			businessDTO.addTransaction("S03201", slipMaster);
 		}
 		
-		//������ ������ �ٷ� �������� �Ա�ó���Ѵ�.
+		//현금을 받으면 바로 지갑으로 입금처리한다.
 		if(inputDTO.getCashAmount().compareTo(BigDecimal.ZERO) == 1){
 			A04DepositAccountMainInsert01DTO inputDTO3 = new A04DepositAccountMainInsert01DTO();
 			inputDTO3.setAccountNo("1900000005");
@@ -227,7 +227,7 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 	
 	public void update(){
 		
-		int nResult = showConfirmDialog("�ϰ�ó�� �Ͻðڽ��ϱ�?");
+		int nResult = showConfirmDialog("일괄처리 하시겠습니까?");
 		if(nResult != 0) return;
 		
 		DefaultTableModel model = (DefaultTableModel)this.tbAccountDetail.getModel();
@@ -251,7 +251,7 @@ public class D01BatchCreditCardPaymentsMain extends EntScreenMain {
 		
 		
 		
-		showMessageDialog("ó�� �Ϸ��߽��ϴ�.");
+		showMessageDialog("처리 완료했습니다.");
 
 		
 		search();

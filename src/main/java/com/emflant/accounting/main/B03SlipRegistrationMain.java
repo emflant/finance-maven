@@ -94,43 +94,43 @@ public class B03SlipRegistrationMain extends EntScreenMain {
 		this.southPanel.setBackground(Color.WHITE);
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		this.lbAccount = new JLabel("����");
+		this.lbAccount = new JLabel("계좌");
 		this.cbAccount = new EntJComboBox();
 		this.cbAccount.addActionListener(new CbAccountChangeListener());
 		
-		this.lbBalance = new JLabel("       �ܾ�");
+		this.lbBalance = new JLabel("       잔액");
 		this.tfBalance = new JTextField(10);
 		this.tfBalance.setEnabled(false);
 		this.tfBalance.setHorizontalAlignment(JTextField.RIGHT);
 		
-		this.lbTradeDate = new JLabel("       �������");
+		this.lbTradeDate = new JLabel("       기산일자");
 		this.tfTradeDate = new JTextField(7);
 		this.tfTradeDate.setText(EntDate.getToday());
 		this.tfTradeDate.setHorizontalAlignment(JTextField.CENTER);
 		
-		this.lbTradeAmount = new JLabel("�ŷ��ݾ�");
+		this.lbTradeAmount = new JLabel("거래금액");
 		
 		this.tfTradeAmount = new JTextField(7);
 		this.tfTradeAmount.setHorizontalAlignment(JTextField.RIGHT);
 		this.tfTradeAmount.setText("0");
 		
-		this.lbRemarks = new JLabel("���");
+		this.lbRemarks = new JLabel("적요");
 		this.tfRemarks = new JTextField(13);
 		this.tfRemarks.setHorizontalAlignment(JTextField.LEFT);
 		
-		this.btnInsert = new JButton("�Ա�");
+		this.btnInsert = new JButton("입금");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 		
 		this.tbAccountDetail = new EntJTable();
 		
-		//�׸����� ��������� �����Ѵ�.		
+		//그리드의 헤더정보를 정의한다.		
 		this.tbAccountDetail.entAddTableHeader("trade_sequence", "#", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "�ŷ�����", JLabel.CENTER, 100);
-		this.tbAccountDetail.entAddTableHeader("trade_type_name", "����", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "���", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "�ŷ��ݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "�ܾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("remarks", "���", JLabel.LEFT, 260);
+		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "거래일자", JLabel.CENTER, 100);
+		this.tbAccountDetail.entAddTableHeader("trade_type_name", "종류", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "취소", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "거래금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "잔액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("remarks", "적요", JLabel.LEFT, 260);
 
 		this.panel1.add(lbAccount);
 		this.panel1.add(cbAccount);
@@ -155,7 +155,7 @@ public class B03SlipRegistrationMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle("[S03] ��ǥ���");
+		setTitle("[S03] 전표등록");
 		
 	}
 	
@@ -166,14 +166,14 @@ public class B03SlipRegistrationMain extends EntScreenMain {
 		this.transactionKinds = "INSERT";
 		
 		if(this.tfTradeAmount.getText().equals("0")){
-			showMessageDialog("�ŷ��ݾ��� 0�Դϴ�.");
+			showMessageDialog("거래금액이 0입니다.");
 			return;
 		}
 		
 		int nResult = showConfirmDialog(cbTradeType.entGetCodeNameOfSelectedItem()
-				+"(��)�� ���� "
-				+this.tfTradeAmount.getText()+"�� "
-				+this.cbLinkType.entGetCodeNameOfSelectedItem()+" ó���Ͻðڽ��ϱ�?");
+				+"(으)로 현금 "
+				+this.tfTradeAmount.getText()+"원 "
+				+this.cbLinkType.entGetCodeNameOfSelectedItem()+" 처리하시겠습니까?");
 		if(nResult != 0) return;
 		
 		BigDecimal bdTradeAmount = new BigDecimal(this.tfTradeAmount.getText());
@@ -234,7 +234,6 @@ public class B03SlipRegistrationMain extends EntScreenMain {
 		
 		EntBusiness businessDTO = new EntBusiness();
 		
-		//1:�Ա�
 		if(strCode.equals("1")){
 			businessDTO.addTransaction("A03101", "('3')");
 		} else {

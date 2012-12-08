@@ -105,7 +105,7 @@ public class EntBean {
 	
 	
 	/**
-	 * º¹¼öÀÇ °Å·¡¸¦ °¢°¢ÀÇ Æ®·»Á§¼ÇÀ¸·Î  commit, rollback ÇÑ´Ù.
+	 * ë³µìˆ˜ì˜ ê±°ë˜ë¥¼ ê°ê°ì˜ íŠ¸ë Œì ì…˜ìœ¼ë¡œ  commit, rollback í•œë‹¤.
 	 * @param transactions
 	 */
 	public void doBusinessOpsEachTransaction(EntBusiness business){
@@ -152,7 +152,7 @@ public class EntBean {
 	
 	
 	/**
-	 * º¹¼öÀÇ °Å·¡¸¦ ÇÏ³ªÀÇ Æ®·»Á§¼ÇÀ¸·Î ¹­¾î commit, rollback ÇÑ´Ù.
+	 * ë³µìˆ˜ì˜ ê±°ë˜ë¥¼ í•˜ë‚˜ì˜ íŠ¸ë Œì ì…˜ìœ¼ë¡œ ë¬¶ì–´ commit, rollback í•œë‹¤.
 	 * @param transactions
 	 */
 	@SuppressWarnings("unchecked")
@@ -183,7 +183,7 @@ public class EntBean {
             		transaction.setSlipSeq(i+1);
             	}
             	transaction.getMethodInfoWithTradeCode();
-            	transaction.display();									//Æ®·£Á§¼Ç info·Î±×
+            	transaction.display();									//íŠ¸ëœì ì…˜ infoë¡œê·¸
             	insertTransaction(transaction);
     			
     			invoke(transaction);
@@ -202,7 +202,7 @@ public class EntBean {
             this.entQuery.commit();
             
         } 
-        //EntException ¹ß»ı½Ã¿¡ °á±¹ InvocationTargetException ·Î ¿¬°üµÇ±â¿¡ ÀÌ°÷À¸·Î ºüÁø´Ù.
+        //EntException ë°œìƒì‹œì— ê²°êµ­ InvocationTargetException ë¡œ ì—°ê´€ë˜ê¸°ì— ì´ê³³ìœ¼ë¡œ ë¹ ì§„ë‹¤.
         catch (InvocationTargetException e) {
 
         	//e.printStackTrace();
@@ -214,10 +214,10 @@ public class EntBean {
 			}
         } 
         
-        //Àß¸øµÈ Å¬·¡½º, ¸Ş½ºµå, ÀÎÀÚ°ª ÀÔ·Â½Ã
+        //ì˜ëª»ëœ í´ë˜ìŠ¤, ë©”ìŠ¤ë“œ, ì¸ìê°’ ì…ë ¥ì‹œ
         catch (NoSuchMethodException e) {
         	e.printStackTrace();
-        	transaction.setErrorMessage("Á¸ÀçÇÏÁö ¾Ê´Â ¸Ş¼Òµå ÀÔ´Ï´Ù. "+e.getMessage());
+        	transaction.setErrorMessage("ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ë©”ì†Œë“œ ì…ë‹ˆë‹¤. "+e.getMessage());
         	try {
         		this.entQuery.rollback();
 			} catch (SQLException e1) {
@@ -226,7 +226,7 @@ public class EntBean {
         	
         } 
         
-        //¿¹±âÄ¡ ¾ÊÀº ¿¹¿Ü..
+        //ì˜ˆê¸°ì¹˜ ì•Šì€ ì˜ˆì™¸..
         catch (Exception e) {
         	//e.printStackTrace();
         	transaction.setErrorMessage(e);
@@ -288,7 +288,7 @@ public class EntBean {
 	}
 	
 	/**
-	 * ´ÜÀÏ°Å·¡¸¦ ÇÑ Æ®·»Á§¼ÇÀ¸·Î  commit, rollback ÇÑ´Ù.
+	 * ë‹¨ì¼ê±°ë˜ë¥¼ í•œ íŠ¸ë Œì ì…˜ìœ¼ë¡œ  commit, rollback í•œë‹¤.
 	 * @param transactions
 	 */
 	@SuppressWarnings("unchecked")
@@ -302,7 +302,7 @@ public class EntBean {
 			this.entQuery.commit();
             
         } 
-        //EntException ¹ß»ı½Ã¿¡ °á±¹ InvocationTargetException ·Î ¿¬°üµÇ±â¿¡ ÀÌ°÷À¸·Î ºüÁø´Ù.
+        //EntException ë°œìƒì‹œì— ê²°êµ­ InvocationTargetException ë¡œ ì—°ê´€ë˜ê¸°ì— ì´ê³³ìœ¼ë¡œ ë¹ ì§„ë‹¤.
         catch (InvocationTargetException e) {
 
         	e.printStackTrace();
@@ -314,11 +314,11 @@ public class EntBean {
 			}
         } 
         
-        //Àß¸øµÈ Å¬·¡½º, ¸Ş½ºµå, ÀÎÀÚ°ª ÀÔ·Â½Ã
+        //ì˜ëª»ëœ í´ë˜ìŠ¤, ë©”ìŠ¤ë“œ, ì¸ìê°’ ì…ë ¥ì‹œ
         catch (NoSuchMethodException e) {
 
         	e.printStackTrace();
-        	transaction.setErrorMessage("Á¸ÀçÇÏÁö ¾Ê´Â ¸Ş¼Òµå ÀÔ´Ï´Ù. "+e.getMessage());
+        	transaction.setErrorMessage("ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ë©”ì†Œë“œ ì…ë‹ˆë‹¤. "+e.getMessage());
         	
         	
         	try {
@@ -329,7 +329,7 @@ public class EntBean {
         	
         } 
         
-        //¿¹±âÄ¡ ¾ÊÀº ¿¹¿Ü..
+        //ì˜ˆê¸°ì¹˜ ì•Šì€ ì˜ˆì™¸..
         catch (Exception e) {
         	e.printStackTrace();
         	transaction.setErrorMessage(e);

@@ -65,7 +65,7 @@ public class CodeMasterBean implements CodemasterRemote {
 		
 		try {
 			transaction.insert(inputDTO);
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;

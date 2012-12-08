@@ -49,12 +49,12 @@ public class EntCommon {
 		
 		Class clazz = obj.getClass();
 		
-		//»ó¼Ó¹Ş´Â DTO ´Â Á÷Á¢ÀûÀ¸·Î field ¼±¾ğÀÌ ¾øÀ¸¹Ç·Î, super class ÀÇ Á¤º¸¸¦ µé°í¿Í Ã¼Å©¸¦ ÇÑ´Ù.
+		//ìƒì†ë°›ëŠ” DTO ëŠ” ì§ì ‘ì ìœ¼ë¡œ field ì„ ì–¸ì´ ì—†ìœ¼ë¯€ë¡œ, super class ì˜ ì •ë³´ë¥¼ ë“¤ê³ ì™€ ì²´í¬ë¥¼ í•œë‹¤.
 		if(clazz.getName().indexOf("com.emflant.accounting.dto.table") != -1){
 			try {
 				clazz = Class.forName("com.emflant.accounting.adapter.table."+clazz.getSimpleName().replace("DTO", ""));
 			} catch (ClassNotFoundException e) {
-				throw new EntException("table dto ÆĞÅ°Áö °æ·Î¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
+				throw new EntException("table dto íŒ¨í‚¤ì§€ ê²½ë¡œë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”.");
 			}
 		}
 		
@@ -75,9 +75,9 @@ public class EntCommon {
 				
 				//Logger.debug(object.toString());
 				if(object == null){
-					throw new EntException("["+clazz.getSimpleName()+"] "+field.getName()+ " ÇÊµå¿¡ °ªÀÌ NULL ÀÔ´Ï´Ù.");
+					throw new EntException("["+clazz.getSimpleName()+"] "+field.getName()+ " í•„ë“œì— ê°’ì´ NULL ì…ë‹ˆë‹¤.");
 				} else if(object.toString().length() == 0){
-					throw new EntException("["+clazz.getSimpleName()+"] "+field.getName()+ " ÇÊµå¿¡ ±æÀÌ°¡ 0 ÀÔ´Ï´Ù.");
+					throw new EntException("["+clazz.getSimpleName()+"] "+field.getName()+ " í•„ë“œì— ê¸¸ì´ê°€ 0 ì…ë‹ˆë‹¤.");
 				}
 				
 			} 
@@ -153,7 +153,7 @@ public class EntCommon {
 		//Logger.debug("getValueAt : "+identifier+", "+row);
 		DefaultTableModel dtm = (DefaultTableModel)table.getModel();
 		if(dtm.findColumn(identifier) == -1){
-			EntLogger.error("Å×ÀÌºíÁ¤º¸¿¡ "+identifier+" ÇÊµå°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+			EntLogger.error("í…Œì´ë¸”ì •ë³´ì— "+identifier+" í•„ë“œê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 			return null;
 		}
 		return dtm.getValueAt(row, dtm.findColumn(identifier));

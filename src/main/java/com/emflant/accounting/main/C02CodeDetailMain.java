@@ -79,10 +79,10 @@ public class C02CodeDetailMain extends EntScreenMain {
 		this.tfCodeName = new JTextField();
 		this.tfCodeName.setColumns(8);
 		
-		this.btnInsert = new JButton("���");
+		this.btnInsert = new JButton("등록");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 		
-		this.btnDelete = new JButton("����");
+		this.btnDelete = new JButton("삭제");
 		this.btnDelete.addActionListener(new DeleteButtonListener());
 		
 		
@@ -108,7 +108,7 @@ public class C02CodeDetailMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
-		setTitle(this.userId + "�� �ڵ峻��");
+		setTitle(this.userId + "의 코드내역");
 
 	}
 	
@@ -117,7 +117,7 @@ public class C02CodeDetailMain extends EntScreenMain {
 		
 		this.transactionKinds = "INSERT";
 		
-		int nResult = showConfirmDialog("����Ͻðڽ��ϱ�?");
+		int nResult = showConfirmDialog("등록하시겠습니까?");
 		if(nResult != 0) return;
 		
 		CodeDetailDTO codeDetail = new CodeDetailDTO();
@@ -142,7 +142,7 @@ public class C02CodeDetailMain extends EntScreenMain {
 		int nSelectedRow = this.tbCodeDetailList.getSelectedRow();
 		
 		if(nSelectedRow == -1){
-			//throw new EntException("�����Ϸ��� �ڵ带 �����ϼ���.");
+			//throw new EntException("삭제하려는 코드를 선택하세요.");
 		}
 		
 		CodeDetailDTO codeDetail = new CodeDetailDTO();
@@ -156,10 +156,7 @@ public class C02CodeDetailMain extends EntScreenMain {
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			//����Ѵ�.
 			insertCodeDetail();
-			
-			//����ȸ�Ѵ�.
 			//tbCodeDetailList.setModel(codeDetailBean.selectTableModelByCodeType(getCodeType()));
 		}
 	}
@@ -167,10 +164,7 @@ public class C02CodeDetailMain extends EntScreenMain {
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			//����Ѵ�.
 			deleteCodeDetail();
-			
-			//����ȸ�Ѵ�.
 			//tbCodeDetailList.setModel(codeDetailBean.selectTableModelByCodeType(getCodeType()));
 		}
 	}

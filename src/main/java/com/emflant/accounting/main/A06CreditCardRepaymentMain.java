@@ -94,43 +94,43 @@ public class A06CreditCardRepaymentMain extends EntScreenMain {
 		this.southPanel.setBackground(Color.WHITE);
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		this.lbAccount = new JLabel("�ſ�ī��");
+		this.lbAccount = new JLabel("신용카드");
 		this.cbAccount = new EntJComboBox();
 		this.cbAccount.addActionListener(new CbAccountChangeListener());
 		
-		this.lbBalance = new JLabel(" ���������ݾ�");
+		this.lbBalance = new JLabel(" 결제예정금액");
 		this.tfTotalRepaymentAmount = new EntJTextFieldForAmount(8);
 		this.tfTotalRepaymentAmount.setEnabled(false);
 		
-		this.lbRepaymentYm = new JLabel("   �������س��");
+		this.lbRepaymentYm = new JLabel("   결제기준년월");
 		this.tfRepaymentYm = new JTextField(7);
 		this.tfRepaymentYm.setText(EntDate.getToday().substring(0, 6));
 		this.tfRepaymentYm.setHorizontalAlignment(JTextField.CENTER);
 		
-		this.btnSearch = new EntJButton("��ȸ");
+		this.btnSearch = new EntJButton("조회");
 		this.btnSearch.addActionListener(new SearchButtonListener());
 		
 		this.cbWithdrawAccount = new EntJComboBox();
 		
-		this.lbTradeDate = new JLabel("   ��������");
+		this.lbTradeDate = new JLabel("   결제일자");
 		this.tfTradeDate = new EntJTextFieldForDate(7);
 		
-		this.lbRemarks = new JLabel("���");
+		this.lbRemarks = new JLabel("적요");
 		this.tfRemarks = new EntJTextFieldForRemarks(15);
 		
-		this.btnInsert = new EntJButton("���");
+		this.btnInsert = new EntJButton("등록");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 
 		this.tbAccountDetail = new EntJTable();
 		
-		//�׸����� ��������� �����Ѵ�.
+		//그리드의 헤더정보를 정의한다.
 		this.tbAccountDetail.entAddTableHeader("trade_sequence", "#", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "�ŷ�����", JLabel.CENTER, 100);
-		this.tbAccountDetail.entAddTableHeader("trade_type_name", "����", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "���", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "�ŷ��ݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "�ܾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("remarks", "���", JLabel.LEFT, 260);
+		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "거래일자", JLabel.CENTER, 100);
+		this.tbAccountDetail.entAddTableHeader("trade_type_name", "종류", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "취소", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "거래금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "잔액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("remarks", "적요", JLabel.LEFT, 260);
 
 
 		this.panel1.add(lbAccount);
@@ -155,7 +155,7 @@ public class A06CreditCardRepaymentMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle("[A06] ī�����");
+		setTitle("[A06] 카드결제");
 		
 	}
 	
@@ -168,12 +168,12 @@ public class A06CreditCardRepaymentMain extends EntScreenMain {
 		String totalRepaymentAmount = this.tfTotalRepaymentAmount.getValue();
 		
 		if(totalRepaymentAmount.equals("") || totalRepaymentAmount.equals("0")){
-			showMessageDialog("�ſ�ī�� �̿����� 0�Դϴ�.");
+			showMessageDialog("신용카드 이용대금이 0입니다.");
 			return;
 		}
 		
-		int nResult = showConfirmDialog("ī���̿��� " + this.tfTotalRepaymentAmount.getText() + 
-				"�� �����Ͻðڽ��ϱ�?");
+		int nResult = showConfirmDialog("카드이용대금 " + this.tfTotalRepaymentAmount.getText() + 
+				"원 결제하시겠습니까?");
 		if(nResult != 0) return;
 		
 		String strCreditcardAccountNo = this.cbAccount.entGetCodeOfSelectedItem();
@@ -183,7 +183,7 @@ public class A06CreditCardRepaymentMain extends EntScreenMain {
 
 		
 		
-		//����������
+		//은행계좌출금
 		A05WithdrawAccountMainInsert01DTO inputDTO1 = new A05WithdrawAccountMainInsert01DTO();
 		inputDTO1.setAccountNo(strWithdrawAccountNo);
 		inputDTO1.setReckonDate(this.tfTradeDate.getValue());
@@ -191,7 +191,7 @@ public class A06CreditCardRepaymentMain extends EntScreenMain {
 		inputDTO1.setCashAmount(BigDecimal.ZERO);
 		inputDTO1.setRemarks(this.tfRemarks.getText());
 		
-		//�ſ�ī�����(��ȯ)
+		//신용카드결제(상환)
 		A06CreditCardRepaymentMainInsert01DTO inputDTO2 = new A06CreditCardRepaymentMainInsert01DTO();
 		inputDTO2.setAccountNo(strCreditcardAccountNo);
 		inputDTO2.setRemarks(this.tfRemarks.getText());

@@ -153,7 +153,7 @@ public class EntQuery {
 		    
 		    String[] columns = new String[nColumnCnt];
 		    
-		    //Çì´õÁ¤º¸ ¼ÂÆÃÇÑ´Ù.
+		    //í—¤ë”ì •ë³´ ì…‹íŒ…í•œë‹¤.
 	    	for(int i=1;i<=nColumnCnt;i++){
     			String strColumnLabel = rsmd.getColumnLabel(i);
     			columns[i-1] = strColumnLabel;
@@ -161,7 +161,7 @@ public class EntQuery {
 	    	lResult.setColumnIdentifiers(columns);
 		    
 		    
-	    	//µ¥ÀÌÅÍÁ¤º¸¸¦ ¼ÂÆÃÇÑ´Ù.
+	    	//ë°ì´í„°ì •ë³´ë¥¼ ì…‹íŒ…í•œë‹¤.
 		    String[] row = null;
 		    
 		    while(rs != null && rs.next()){
@@ -177,7 +177,7 @@ public class EntQuery {
 		    	
 		    }
 			
-			EntLogger.debug("Á¶È¸°á°ú °Ç¼ö : "+lResult.getRowCount());
+			EntLogger.debug("ì¡°íšŒê²°ê³¼ ê±´ìˆ˜ : "+lResult.getRowCount());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -254,7 +254,7 @@ public class EntQuery {
 		    	lResult.add(obj);
 		    	hashMap.put(code, (CodeDetailDTO) obj);
 		    }
-		    EntLogger.debug("Á¶È¸°á°ú °Ç¼ö : "+lResult.size());
+		    EntLogger.debug("ì¡°íšŒê²°ê³¼ ê±´ìˆ˜ : "+lResult.size());
 		    //entHashList.setHashMap(hashMap);
 		    //entHashList.setList(lResult);
 			

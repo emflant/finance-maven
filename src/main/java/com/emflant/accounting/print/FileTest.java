@@ -53,7 +53,7 @@ public class FileTest {
 				bufferedWriter.newLine();
 			}
 			
-			EntLogger.debug(pathName+" ÆÄÀÏ»ı¼º ¿Ï·á.");
+			EntLogger.debug(pathName+" íŒŒì¼ìƒì„± ì™„ë£Œ.");
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

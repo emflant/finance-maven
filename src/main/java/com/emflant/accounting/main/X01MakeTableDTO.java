@@ -65,7 +65,7 @@ public class X01MakeTableDTO extends EntScreenMain {
 		this.centerPanel.setBackground(Color.WHITE);
 		this.centerPanel.setLayout(new BorderLayout());
 		
-		this.lbCodeType = new JLabel("���̺�");
+		this.lbCodeType = new JLabel("테이블");
 		this.cbCodeType = new EntJComboBox();
 		this.cbCodeType.addActionListener(new ChangeCodeTypeComboBoxListener());
 
@@ -76,8 +76,8 @@ public class X01MakeTableDTO extends EntScreenMain {
 		this.tfCodeName = new JTextField();
 		this.tfCodeName.setColumns(8);
 		
-		this.btnInsert = new JButton("���ϻ�");
-		this.btnAllInsert = new JButton("��ü���ϻ�");
+		this.btnInsert = new JButton("파일생성");
+		this.btnAllInsert = new JButton("전체파일생성");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 		this.btnAllInsert.addActionListener(new AllInsertButtonListener());
 
@@ -104,7 +104,7 @@ public class X01MakeTableDTO extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 
-		setTitle("[X01] ���̺� ���� ��ȸ");
+		setTitle("[X01] 테이블 정보 조회");
 
 	}
 	
@@ -125,11 +125,7 @@ public class X01MakeTableDTO extends EntScreenMain {
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			
-			//����Ѵ�.
 			insert(cbCodeType.entGetCodeOfSelectedItem());
-			
-			//����ȸ�Ѵ�.
 			//tbCodeDetailList.setModel(codeDetailBean.selectTableModelByCodeType(getCodeType()));
 		}
 	}
@@ -138,8 +134,6 @@ public class X01MakeTableDTO extends EntScreenMain {
 
 		public void actionPerformed(ActionEvent e) 
 		{
-			//����Ѵ�.
-			
 			List<CodeDetailDTO> list = cbCodeType.getCodeDetailList();
 			
 			for(CodeDetailDTO codeDetailDTO : list){

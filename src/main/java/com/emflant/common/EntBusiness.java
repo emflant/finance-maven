@@ -86,8 +86,8 @@ public class EntBusiness {
 	}
 	
 	/**
-	 * ÀüÇ¥¹øÈ£ »ı¼º½Ã Æ®·£Á§¼Ç¸¶´Ù ´Ù¸£°Ô ÇÏ·Á¸é false
-	 * ¸ğµÎ °°Àº ÀüÇ¥·Î ±âÇ¥ÇÏ·Á¸é true;
+	 * ì „í‘œë²ˆí˜¸ ìƒì„±ì‹œ íŠ¸ëœì ì…˜ë§ˆë‹¤ ë‹¤ë¥´ê²Œ í•˜ë ¤ë©´ false
+	 * ëª¨ë‘ ê°™ì€ ì „í‘œë¡œ ê¸°í‘œí•˜ë ¤ë©´ true;
 	 */
 	public void setIsOneSlip(boolean isOneSlip) {
 		this.isOneSlip = isOneSlip;

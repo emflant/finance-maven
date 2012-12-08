@@ -93,47 +93,45 @@ public class A09ReverseTransactionMain extends EntScreenMain {
 		this.southPanel.setBackground(Color.WHITE);
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		
-		this.lbAccount = new JLabel("����");
+		this.lbAccount = new JLabel("계좌");
 		this.cbAccount = new EntJComboBox();
 		this.cbAccount.addActionListener(new CbAccountChangeListener());
 		
-		this.lbBalance = new JLabel("       �ܾ�");
+		this.lbBalance = new JLabel("       잔액");
 		this.tfBalance = new EntJTextFieldForAmount(10);
 		this.tfBalance.setEnabled(false);
 		
 
-		this.lbRemarks = new JLabel("���");
+		this.lbRemarks = new JLabel("적요");
 		
 		this.tfRemarks = new EntJTextFieldForRemarks(15);
 		
-		this.btnInsert = new EntJButton("��� / ����");
+		this.btnInsert = new EntJButton("취소 / 정정");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 
 		this.tbAccountDetail = new EntJTable();
 		this.tbAccountDetail.getSelectionModel().addListSelectionListener(new TableSelectionListener());
 		
-		//�׸����� ��������� �����Ѵ�.
+		//그리드의 헤더정보를 정의한다.
 		this.tbAccountDetail.entAddTableHeader("trade_sequence", "#", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "�ŷ�����", JLabel.CENTER, 100);
-		this.tbAccountDetail.entAddTableHeader("trade_type_name", "����", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "���", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "�ŷ��ݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "�ܾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("remarks", "���", JLabel.LEFT, 260);
+		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "거래일자", JLabel.CENTER, 100);
+		this.tbAccountDetail.entAddTableHeader("trade_type_name", "종류", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "취소", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "거래금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "잔액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("remarks", "적요", JLabel.LEFT, 260);
 		
 		this.tbLinkTransactions = new EntJTable();
 		
-		//�׸����� ��������� �����Ѵ�.
+		//그리드의 헤더정보를 정의한다.
 		//this.tbLinkTransactions.entAddCheckBoxTableHeader("checkbox", "check", JCheckBox.CENTER, 50);
 		this.tbLinkTransactions.entAddTableHeader("transaction_sequence", "#", JLabel.CENTER, 50);
-		this.tbLinkTransactions.entAddTableHeader("bean_type", "Ŭ������", JLabel.LEFT, 200);
-		this.tbLinkTransactions.entAddTableHeader("method_type", "�޼ҵ��", JLabel.LEFT, 200);
-		this.tbLinkTransactions.entAddTableHeader("start_date_time", "����Ͻ�", JLabel.CENTER, 200);
-		this.tbLinkTransactions.entAddTableHeader("gap_time", "���ð�", JLabel.CENTER, 100);
-		this.tbLinkTransactions.entAddTableHeader("cancel_trade_code", "��Ұŷ�", JLabel.CENTER, 100);
+		this.tbLinkTransactions.entAddTableHeader("bean_type", "클래스명", JLabel.LEFT, 200);
+		this.tbLinkTransactions.entAddTableHeader("method_type", "메소드명", JLabel.LEFT, 200);
+		this.tbLinkTransactions.entAddTableHeader("start_date_time", "등록일시", JLabel.CENTER, 200);
+		this.tbLinkTransactions.entAddTableHeader("gap_time", "경과시간", JLabel.CENTER, 100);
+		this.tbLinkTransactions.entAddTableHeader("cancel_trade_code", "취소거래", JLabel.CENTER, 100);
 		
-		//�׸����� ��������� �����Ѵ�.
-
 		this.panel1.add(lbAccount);
 		this.panel1.add(cbAccount);
 		this.panel1.add(lbBalance);
@@ -152,7 +150,7 @@ public class A09ReverseTransactionMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle(this.userId + "�� �������/����");
+		setTitle(this.userId + "의 계정취소/정정");
 		
 	}
 	
@@ -167,14 +165,14 @@ public class A09ReverseTransactionMain extends EntScreenMain {
 		int nSelectedRow = this.tbAccountDetail.getSelectedRow();
 		
 		if(nSelectedRow == -1){
-			showMessageDialog("����� �ŷ��� �����ϼ���.");
+			showMessageDialog("취소할 거래를 선택하세요.");
 		}
 		
 		tbLinkTransactions.entGetValueOfSelectedRow("");
 		
 		String strTradeSequence = this.tbAccountDetail.entGetValueOfSelectedRow("trade_sequence");
 		
-		int nResult = showConfirmDialog(strAccountNo +" ������ "+strTradeSequence+"�� �ŷ��� ����Ͻðڽ��ϱ�?");
+		int nResult = showConfirmDialog(strAccountNo +" 계좌의 "+strTradeSequence+"번 거래를 취소하시겠습니까?");
 		if(nResult != 0) return;
 		
 		A09ReverseTransactionMainInsert01DTO inputDTO = null;
@@ -203,7 +201,7 @@ public class A09ReverseTransactionMain extends EntScreenMain {
 		if(businessDTO.getTransactionCount() > 0){
 			transactionCommitAtOnce(businessDTO);
 		} else {
-			showMessageDialog("����� �ŷ��� ����ϴ�.");
+			showMessageDialog("취소할 거래가 없습니다.");
 		}
 		
 		
@@ -311,7 +309,7 @@ public class A09ReverseTransactionMain extends EntScreenMain {
 	}
 
 	/**
-	 * ������ ���� �׸���Ŭ���� ������ ���ε� �Ѵ�.
+	 * 수정을 위해 그리드클릭시 데이터 바인딩 한다.
 	 */
 	public void bindUpdateData(){
 		

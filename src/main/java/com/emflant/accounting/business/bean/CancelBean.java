@@ -17,10 +17,10 @@ import com.emflant.common.EntLogger;
 public class CancelBean implements CancelRemote {
 	private EntTransaction transaction;
 	
-	private final String ACCOUNT_DEPOSIT = "02";		//ÀÔ±İ
-	private final String ACCOUNT_WITHDRAW = "03";		//Ãâ±İ
-	private final String CREDITCARD_PAYMENT = "04";		//½ÂÀÎ
-	private final String CREDITCARD_REPAYMENT = "05";	//°áÁ¦
+	private final String ACCOUNT_DEPOSIT = "02";		//ì…ê¸ˆ
+	private final String ACCOUNT_WITHDRAW = "03";		//ì¶œê¸ˆ
+	private final String CREDITCARD_PAYMENT = "04";		//ìŠ¹ì¸
+	private final String CREDITCARD_REPAYMENT = "05";	//ê²°ì œ
 	
 	public CancelBean(EntTransaction transaction){
 		this.transaction = transaction;
@@ -31,10 +31,10 @@ public class CancelBean implements CancelRemote {
 	public void selectLinkTransactions(A09ReverseTransactionMainSelect01DTO inputDTO) throws EntException {
 		try {
 			
-			//°èÁ¤Ã³¸®
+			//ê³„ì •ì²˜ë¦¬
 			//A09ReverseTransactionMainSelect01DTO inputDTO = (A09ReverseTransactionMainSelect01DTO)transaction.getMethodParam();
 			
-			//°Å·¡³»¿ª Á¶È¸
+			//ê±°ë˜ë‚´ì—­ ì¡°íšŒ
 			AccountDetailBean accountDetailBean = new AccountDetailBean(this.transaction);
 			AccountDetailDTO originalAccountDetailDTO = accountDetailBean.selectAccountDetailByKey(
 						inputDTO.getAccountNo(), inputDTO.getTradeSequence());
@@ -69,16 +69,16 @@ public class CancelBean implements CancelRemote {
 	public void cancel(A09ReverseTransactionMainInsert01DTO inputDTO) throws EntException {
 		try {
 			
-			//°èÁ¤Ã³¸®
+			//ê³„ì •ì²˜ë¦¬
 			//A09ReverseTransactionMainInsert01DTO inputDTO = (A09ReverseTransactionMainInsert01DTO)transaction.getMethodParam();
 			
-			//°Å·¡³»¿ª Á¶È¸
+			//ê±°ë˜ë‚´ì—­ ì¡°íšŒ
 			AccountDetailBean accountDetailBean = new AccountDetailBean(this.transaction);
 			AccountDetailDTO originalAccountDetailDTO = accountDetailBean.selectAccountDetailByRegisterDateTime(
 						inputDTO.getRegisterUserId(), inputDTO.getRegisterDateTime());
 			
 			if(!originalAccountDetailDTO.getCancelType().equals("0")){
-				throw new EntException("Á¤»ó°Å·¡¸¸ Ãë¼Ò/Á¤Á¤ÀÌ °¡´ÉÇÕ´Ï´Ù.");
+				throw new EntException("ì •ìƒê±°ë˜ë§Œ ì·¨ì†Œ/ì •ì •ì´ ê°€ëŠ¥í•©ë‹ˆë‹¤.");
 			}
 			
 			
@@ -95,11 +95,11 @@ public class CancelBean implements CancelRemote {
 				cancelCreditCardRepayment(inputDTO, originalAccountDetailDTO);
 			}
 			else {
-				throw new EntException("Ãë¼Ò°¡ ºÒ°¡´ÉÇÑ °Å·¡À¯ÇüÀÔ´Ï´Ù.");
+				throw new EntException("ì·¨ì†Œê°€ ë¶ˆê°€ëŠ¥í•œ ê±°ë˜ìœ í˜•ì…ë‹ˆë‹¤.");
 			}
 			
 			
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î Ãë¼ÒµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ì·¨ì†Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;
@@ -109,55 +109,55 @@ public class CancelBean implements CancelRemote {
 	public void cancelCreditcardPayment(A09ReverseTransactionMainInsert01DTO inputDTO
 			, AccountDetailDTO originalAccountDetailDTO) throws EntException{
 		
-		//È¸°èÃ³¸®.
+		//íšŒê³„ì²˜ë¦¬.
 		SlipBean slipBean = new SlipBean(this.transaction);
 		slipBean.cancel(originalAccountDetailDTO.getSlipNo(), originalAccountDetailDTO.getSlipSeq());
 		
-		//°èÁÂ¿øÀå Á¶È¸
+		//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 		AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 		AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(originalAccountDetailDTO.getAccountNo());
 		
-		//ÃÖÁ¾°Å·¡ÀÏÀÚº¸´Ù ÀüÀÏÀÚ °Å·¡´Â Ãë¼Ò ºÒ°¡.
+		//ìµœì¢…ê±°ë˜ì¼ìë³´ë‹¤ ì „ì¼ì ê±°ë˜ëŠ” ì·¨ì†Œ ë¶ˆê°€.
 		if(accountMasterDTO.getLastTradeDate().compareTo(originalAccountDetailDTO.getReckonDate()) >= 0){
-			throw new EntException("ÃÖÁ¾°Å·¡ÀÏº¸´Ù ÀÌÀüÀÏÀÚ·Î °Å·¡Ãë¼Ò ºÒ°¡ ÇÕ´Ï´Ù.");
+			throw new EntException("ìµœì¢…ê±°ë˜ì¼ë³´ë‹¤ ì´ì „ì¼ìë¡œ ê±°ë˜ì·¨ì†Œ ë¶ˆê°€ í•©ë‹ˆë‹¤.");
 		}
 		
 		BigDecimal bdAfterBalance = accountMasterDTO.getBalance().add(originalAccountDetailDTO.getTradeAmount());
 		
-		//Ãë¼ÒÇÏ´Â ±â»êÀÏÀÇ ¸¶Áö¸·°Å·¡ÀÇ ¼Ò±ŞÀÜ¾×À» ±¸ÇØ¿Â´Ù.
+		//ì·¨ì†Œí•˜ëŠ” ê¸°ì‚°ì¼ì˜ ë§ˆì§€ë§‰ê±°ë˜ì˜ ì†Œê¸‰ì”ì•¡ì„ êµ¬í•´ì˜¨ë‹¤.
 		AccountDetailBean accountDetailBean = new AccountDetailBean(this.transaction);
 		AccountDetailDTO accountDetailOfReckonDate = accountDetailBean.getLastAccountDetailOfReckonDate(
 				originalAccountDetailDTO.getAccountNo(),
 				originalAccountDetailDTO.getReckonDate());
 
-		//Ãë¼ÒÇÏ·Á´Â ¿ø°Å·¡ÀÇ °Å·¡±İ¾×À» ´õÇÑ´Ù.
+		//ì·¨ì†Œí•˜ë ¤ëŠ” ì›ê±°ë˜ì˜ ê±°ë˜ê¸ˆì•¡ì„ ë”í•œë‹¤.
 		BigDecimal bdAfterReckonBalance = accountDetailOfReckonDate.getAfterReckonBalance()
 					.add(originalAccountDetailDTO.getTradeAmount());
 		
-		//»õ°Å·¡³»¿ª µî·Ï
+		//ìƒˆê±°ë˜ë‚´ì—­ ë“±ë¡
 		AccountDetailDTO newAccountDetailDTO = new AccountDetailDTO(this.transaction);
 		newAccountDetailDTO.setAccountNo(originalAccountDetailDTO.getAccountNo());
 		newAccountDetailDTO.setTradeSequence(accountMasterDTO.getLastTradeSequence()+1);
 		newAccountDetailDTO.setSlipNo(transaction.getSlipNo());
 		newAccountDetailDTO.setSlipSeq(transaction.getSlipSeq());
 		newAccountDetailDTO.setReckonDate(originalAccountDetailDTO.getReckonDate());
-		newAccountDetailDTO.setInoutType("1");		//ÀÔ±İ
-		newAccountDetailDTO.setTradeType(originalAccountDetailDTO.getTradeType());		//¿ø°Å·¡¿Í µ¿ÀÏÇÏ°Ô ¼ÂÆÃ.
-		newAccountDetailDTO.setCancelType("8");		//8:Á¤Á¤°Å·¡
+		newAccountDetailDTO.setInoutType("1");		//ì…ê¸ˆ
+		newAccountDetailDTO.setTradeType(originalAccountDetailDTO.getTradeType());		//ì›ê±°ë˜ì™€ ë™ì¼í•˜ê²Œ ì…‹íŒ….
+		newAccountDetailDTO.setCancelType("8");		//8:ì •ì •ê±°ë˜
 		newAccountDetailDTO.setRelatedTradeSequence(originalAccountDetailDTO.getTradeSequence());
 		newAccountDetailDTO.setTradeAmount(originalAccountDetailDTO.getTradeAmount());
 		newAccountDetailDTO.setCashAmount(originalAccountDetailDTO.getCashAmount());
 		newAccountDetailDTO.setNonCashAmount(originalAccountDetailDTO.getNonCashAmount());
 		newAccountDetailDTO.setAfterTradeBalance(bdAfterBalance);
 		newAccountDetailDTO.setAfterReckonBalance(bdAfterReckonBalance);
-		//newAccountDetailDTO.setRemarks("½Å¿ëÄ«µå½ÂÀÎ°Å·¡Ãë¼Ò");
+		//newAccountDetailDTO.setRemarks("ì‹ ìš©ì¹´ë“œìŠ¹ì¸ê±°ë˜ì·¨ì†Œ");
 		
 		this.transaction.insert(newAccountDetailDTO);
 		
-		//±âÁ¸°Å·¡³»¿ª ¼öÁ¤(¼Ò±ŞÀÜ¾×)
+		//ê¸°ì¡´ê±°ë˜ë‚´ì—­ ìˆ˜ì •(ì†Œê¸‰ì”ì•¡)
 		accountDetailBean.updateAccountDetailByReckonDate(newAccountDetailDTO);
 		
-		//¿ø°Å·¡³»¿ª ¼öÁ¤
+		//ì›ê±°ë˜ë‚´ì—­ ìˆ˜ì •
 		StringBuilder sbQuery = new StringBuilder(1024);
 		sbQuery.append(" update account_detail ");
 		sbQuery.append(" set cancel_type = '2'         ");
@@ -170,7 +170,7 @@ public class CancelBean implements CancelRemote {
 		this.transaction.update(sbQuery);
 		
 		
-		//°èÁÂ¿øÀå ¼öÁ¤
+		//ê³„ì¢Œì›ì¥ ìˆ˜ì •
 		AccountMasterDTO updateAccountMaster = new AccountMasterDTO(this.transaction);
 		updateAccountMaster.setBalance(newAccountDetailDTO.getAfterTradeBalance());
 		updateAccountMaster.setLastTradeSequence(newAccountDetailDTO.getTradeSequence());
@@ -183,7 +183,7 @@ public class CancelBean implements CancelRemote {
 	
 
 	/**
-	 * ½Å¿ëÄ«µå ÀÌ¿ë´ë±İ °áÁ¦ Ãë¼Ò
+	 * ì‹ ìš©ì¹´ë“œ ì´ìš©ëŒ€ê¸ˆ ê²°ì œ ì·¨ì†Œ
 	 * @param inputDTO
 	 * @param originalAccountDetailDTO
 	 * @throws EntException
@@ -191,56 +191,56 @@ public class CancelBean implements CancelRemote {
 	public void cancelCreditCardRepayment(A09ReverseTransactionMainInsert01DTO inputDTO
 			, AccountDetailDTO originalAccountDetailDTO) throws EntException{
 		
-		//È¸°èÃ³¸®.
+		//íšŒê³„ì²˜ë¦¬.
 		SlipBean slipBean = new SlipBean(this.transaction);
 		slipBean.cancel(originalAccountDetailDTO.getSlipNo(), originalAccountDetailDTO.getSlipSeq());
 		
-		//°èÁÂ¿øÀå Á¶È¸
+		//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 		AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 		AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(originalAccountDetailDTO.getAccountNo());
 		
-		//ÃÖÁ¾°Å·¡ÀÏÀÚº¸´Ù ÀüÀÏÀÚ °Å·¡´Â Ãë¼Ò ºÒ°¡.
+		//ìµœì¢…ê±°ë˜ì¼ìë³´ë‹¤ ì „ì¼ì ê±°ë˜ëŠ” ì·¨ì†Œ ë¶ˆê°€.
 		if(accountMasterDTO.getLastTradeDate().compareTo(originalAccountDetailDTO.getReckonDate()) > 0){
-			throw new EntException("ÃÖÁ¾°Å·¡ÀÏº¸´Ù ÀÌÀüÀÏÀÚ·Î °Å·¡Ãë¼Ò ºÒ°¡ ÇÕ´Ï´Ù.");
+			throw new EntException("ìµœì¢…ê±°ë˜ì¼ë³´ë‹¤ ì´ì „ì¼ìë¡œ ê±°ë˜ì·¨ì†Œ ë¶ˆê°€ í•©ë‹ˆë‹¤.");
 		}
 		
 		
 		BigDecimal bdAfterBalance = accountMasterDTO.getBalance().subtract(originalAccountDetailDTO.getTradeAmount());
 		
-		//Ãë¼ÒÇÏ´Â ±â»êÀÏÀÇ ¸¶Áö¸·°Å·¡ÀÇ ¼Ò±ŞÀÜ¾×À» ±¸ÇØ¿Â´Ù.
+		//ì·¨ì†Œí•˜ëŠ” ê¸°ì‚°ì¼ì˜ ë§ˆì§€ë§‰ê±°ë˜ì˜ ì†Œê¸‰ì”ì•¡ì„ êµ¬í•´ì˜¨ë‹¤.
 		AccountDetailBean accountDetailBean = new AccountDetailBean(this.transaction);
 		AccountDetailDTO accountDetailOfReckonDate = accountDetailBean.getLastAccountDetailOfReckonDate(
 				originalAccountDetailDTO.getAccountNo(),
 				originalAccountDetailDTO.getReckonDate());
 
-		//Ãë¼ÒÇÏ·Á´Â ¿ø°Å·¡ÀÇ °Å·¡±İ¾×À» »«´Ù.
+		//ì·¨ì†Œí•˜ë ¤ëŠ” ì›ê±°ë˜ì˜ ê±°ë˜ê¸ˆì•¡ì„ ëº€ë‹¤.
 		BigDecimal bdAfterReckonBalance = accountDetailOfReckonDate.getAfterReckonBalance()
 					.subtract(originalAccountDetailDTO.getTradeAmount());
 		
-		//»õ°Å·¡³»¿ª µî·Ï
+		//ìƒˆê±°ë˜ë‚´ì—­ ë“±ë¡
 		AccountDetailDTO newAccountDetailDTO = new AccountDetailDTO(this.transaction);
 		newAccountDetailDTO.setAccountNo(originalAccountDetailDTO.getAccountNo());
 		newAccountDetailDTO.setTradeSequence(accountMasterDTO.getLastTradeSequence()+1);
 		newAccountDetailDTO.setSlipNo(transaction.getSlipNo());
 		newAccountDetailDTO.setSlipSeq(transaction.getSlipSeq());
 		newAccountDetailDTO.setReckonDate(originalAccountDetailDTO.getReckonDate());
-		newAccountDetailDTO.setInoutType("2");		//2:Áö±Ş
-		newAccountDetailDTO.setTradeType(originalAccountDetailDTO.getTradeType());		//¿ø°Å·¡¿Í µ¿ÀÏÇÏ°Ô ¼ÂÆÃ.
-		newAccountDetailDTO.setCancelType("8");		//8:Á¤Á¤°Å·¡
+		newAccountDetailDTO.setInoutType("2");		//2:ì§€ê¸‰
+		newAccountDetailDTO.setTradeType(originalAccountDetailDTO.getTradeType());		//ì›ê±°ë˜ì™€ ë™ì¼í•˜ê²Œ ì…‹íŒ….
+		newAccountDetailDTO.setCancelType("8");		//8:ì •ì •ê±°ë˜
 		newAccountDetailDTO.setRelatedTradeSequence(originalAccountDetailDTO.getTradeSequence());
 		newAccountDetailDTO.setTradeAmount(originalAccountDetailDTO.getTradeAmount());
 		newAccountDetailDTO.setCashAmount(originalAccountDetailDTO.getCashAmount());
 		newAccountDetailDTO.setNonCashAmount(originalAccountDetailDTO.getNonCashAmount());
 		newAccountDetailDTO.setAfterTradeBalance(bdAfterBalance);
 		newAccountDetailDTO.setAfterReckonBalance(bdAfterReckonBalance);
-		//newAccountDetailDTO.setRemarks("½Å¿ëÄ«µå½ÂÀÎ°Å·¡Ãë¼Ò");
+		//newAccountDetailDTO.setRemarks("ì‹ ìš©ì¹´ë“œìŠ¹ì¸ê±°ë˜ì·¨ì†Œ");
 		
 		this.transaction.insert(newAccountDetailDTO);
 		
-		//±âÁ¸°Å·¡³»¿ª ¼öÁ¤(¼Ò±ŞÀÜ¾×)
+		//ê¸°ì¡´ê±°ë˜ë‚´ì—­ ìˆ˜ì •(ì†Œê¸‰ì”ì•¡)
 		accountDetailBean.updateAccountDetailByReckonDate(newAccountDetailDTO);
 		
-		//¿ø°Å·¡³»¿ª ¼öÁ¤
+		//ì›ê±°ë˜ë‚´ì—­ ìˆ˜ì •
 		StringBuilder sbQuery = new StringBuilder(1024);
 		sbQuery.append(" update account_detail ");
 		sbQuery.append(" set cancel_type = '2'         ");
@@ -270,7 +270,7 @@ public class CancelBean implements CancelRemote {
 			EntLogger.debug("2:"+strBeforeLastTradeDate);
 		}
 		
-		//°èÁÂ¿øÀå ¼öÁ¤
+		//ê³„ì¢Œì›ì¥ ìˆ˜ì •
 		AccountMasterDTO updateAccountMaster = new AccountMasterDTO(this.transaction);
 		updateAccountMaster.setBalance(newAccountDetailDTO.getAfterTradeBalance());
 		updateAccountMaster.setLastTradeSequence(newAccountDetailDTO.getTradeSequence());
@@ -284,7 +284,7 @@ public class CancelBean implements CancelRemote {
 
 	
 	/**
-	 * ÀÔ±İ Ãë¼Ò
+	 * ì…ê¸ˆ ì·¨ì†Œ
 	 * @param inputDTO
 	 * @param originalAccountDetailDTO
 	 * @throws EntException
@@ -292,56 +292,56 @@ public class CancelBean implements CancelRemote {
 	public void cancelAccountDeposit(A09ReverseTransactionMainInsert01DTO inputDTO
 			, AccountDetailDTO originalAccountDetailDTO) throws EntException{
 		
-		//È¸°èÃ³¸®.
+		//íšŒê³„ì²˜ë¦¬.
 		SlipBean slipBean = new SlipBean(this.transaction);
 		slipBean.cancel(originalAccountDetailDTO.getSlipNo(), originalAccountDetailDTO.getSlipSeq());
 		
-		//°èÁÂ¿øÀå Á¶È¸
+		//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 		AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 		AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(originalAccountDetailDTO.getAccountNo());
 		
-		//ÃÖÁ¾°Å·¡ÀÏÀÚº¸´Ù ÀüÀÏÀÚ °Å·¡´Â Ãë¼Ò ºÒ°¡.
+		//ìµœì¢…ê±°ë˜ì¼ìë³´ë‹¤ ì „ì¼ì ê±°ë˜ëŠ” ì·¨ì†Œ ë¶ˆê°€.
 		if(accountMasterDTO.getLastTradeDate().compareTo(originalAccountDetailDTO.getReckonDate()) >= 0){
-			throw new EntException("ÃÖÁ¾°Å·¡ÀÏº¸´Ù ÀÌÀüÀÏÀÚ·Î °Å·¡Ãë¼Ò ºÒ°¡ ÇÕ´Ï´Ù.");
+			throw new EntException("ìµœì¢…ê±°ë˜ì¼ë³´ë‹¤ ì´ì „ì¼ìë¡œ ê±°ë˜ì·¨ì†Œ ë¶ˆê°€ í•©ë‹ˆë‹¤.");
 		}
 		
 		
 		BigDecimal bdAfterBalance = accountMasterDTO.getBalance().subtract(originalAccountDetailDTO.getTradeAmount());
 		
-		//Ãë¼ÒÇÏ´Â ±â»êÀÏÀÇ ¸¶Áö¸·°Å·¡ÀÇ ¼Ò±ŞÀÜ¾×À» ±¸ÇØ¿Â´Ù.
+		//ì·¨ì†Œí•˜ëŠ” ê¸°ì‚°ì¼ì˜ ë§ˆì§€ë§‰ê±°ë˜ì˜ ì†Œê¸‰ì”ì•¡ì„ êµ¬í•´ì˜¨ë‹¤.
 		AccountDetailBean accountDetailBean = new AccountDetailBean(this.transaction);
 		AccountDetailDTO accountDetailOfReckonDate = accountDetailBean.getLastAccountDetailOfReckonDate(
 				originalAccountDetailDTO.getAccountNo(),
 				originalAccountDetailDTO.getReckonDate());
 
-		//Ãë¼ÒÇÏ·Á´Â ¿ø°Å·¡ÀÇ °Å·¡±İ¾×À» »«´Ù.
+		//ì·¨ì†Œí•˜ë ¤ëŠ” ì›ê±°ë˜ì˜ ê±°ë˜ê¸ˆì•¡ì„ ëº€ë‹¤.
 		BigDecimal bdAfterReckonBalance = accountDetailOfReckonDate.getAfterReckonBalance()
 					.subtract(originalAccountDetailDTO.getTradeAmount());
 		
-		//»õ°Å·¡³»¿ª µî·Ï
+		//ìƒˆê±°ë˜ë‚´ì—­ ë“±ë¡
 		AccountDetailDTO newAccountDetailDTO = new AccountDetailDTO(this.transaction);
 		newAccountDetailDTO.setAccountNo(originalAccountDetailDTO.getAccountNo());
 		newAccountDetailDTO.setTradeSequence(accountMasterDTO.getLastTradeSequence()+1);
 		newAccountDetailDTO.setSlipNo(transaction.getSlipNo());
 		newAccountDetailDTO.setSlipSeq(transaction.getSlipSeq());
 		newAccountDetailDTO.setReckonDate(originalAccountDetailDTO.getReckonDate());
-		newAccountDetailDTO.setInoutType("2");		//2:Áö±Ş
-		newAccountDetailDTO.setTradeType(originalAccountDetailDTO.getTradeType());		//¿ø°Å·¡¿Í µ¿ÀÏÇÏ°Ô ¼ÂÆÃ.
-		newAccountDetailDTO.setCancelType("8");		//8:Á¤Á¤°Å·¡
+		newAccountDetailDTO.setInoutType("2");		//2:ì§€ê¸‰
+		newAccountDetailDTO.setTradeType(originalAccountDetailDTO.getTradeType());		//ì›ê±°ë˜ì™€ ë™ì¼í•˜ê²Œ ì…‹íŒ….
+		newAccountDetailDTO.setCancelType("8");		//8:ì •ì •ê±°ë˜
 		newAccountDetailDTO.setRelatedTradeSequence(originalAccountDetailDTO.getTradeSequence());
 		newAccountDetailDTO.setTradeAmount(originalAccountDetailDTO.getTradeAmount());
 		newAccountDetailDTO.setCashAmount(originalAccountDetailDTO.getCashAmount());
 		newAccountDetailDTO.setNonCashAmount(originalAccountDetailDTO.getNonCashAmount());
 		newAccountDetailDTO.setAfterTradeBalance(bdAfterBalance);
 		newAccountDetailDTO.setAfterReckonBalance(bdAfterReckonBalance);
-		//newAccountDetailDTO.setRemarks("½Å¿ëÄ«µå½ÂÀÎ°Å·¡Ãë¼Ò");
+		//newAccountDetailDTO.setRemarks("ì‹ ìš©ì¹´ë“œìŠ¹ì¸ê±°ë˜ì·¨ì†Œ");
 		
 		this.transaction.insert(newAccountDetailDTO);
 		
-		//±âÁ¸°Å·¡³»¿ª ¼öÁ¤(¼Ò±ŞÀÜ¾×)
+		//ê¸°ì¡´ê±°ë˜ë‚´ì—­ ìˆ˜ì •(ì†Œê¸‰ì”ì•¡)
 		accountDetailBean.updateAccountDetailByReckonDate(newAccountDetailDTO);
 		
-		//¿ø°Å·¡³»¿ª ¼öÁ¤
+		//ì›ê±°ë˜ë‚´ì—­ ìˆ˜ì •
 		StringBuilder sbQuery = new StringBuilder(1024);
 		sbQuery.append(" update account_detail ");
 		sbQuery.append(" set cancel_type = '2'         ");
@@ -354,7 +354,7 @@ public class CancelBean implements CancelRemote {
 		this.transaction.update(sbQuery);
 		
 		
-		//°èÁÂ¿øÀå ¼öÁ¤
+		//ê³„ì¢Œì›ì¥ ìˆ˜ì •
 		AccountMasterDTO updateAccountMaster = new AccountMasterDTO(this.transaction);
 		updateAccountMaster.setBalance(newAccountDetailDTO.getAfterTradeBalance());
 		updateAccountMaster.setLastTradeSequence(newAccountDetailDTO.getTradeSequence());
@@ -366,7 +366,7 @@ public class CancelBean implements CancelRemote {
 	}
 
 	/**
-	 * Ãâ±İ Ãë¼Ò
+	 * ì¶œê¸ˆ ì·¨ì†Œ
 	 * @param inputDTO
 	 * @param originalAccountDetailDTO
 	 * @throws EntException
@@ -374,56 +374,56 @@ public class CancelBean implements CancelRemote {
 	public void cancelAccountWithdraw(A09ReverseTransactionMainInsert01DTO inputDTO
 			, AccountDetailDTO originalAccountDetailDTO) throws EntException{
 		
-		//È¸°èÃ³¸®.
+		//íšŒê³„ì²˜ë¦¬.
 		SlipBean slipBean = new SlipBean(this.transaction);
 		slipBean.cancel(originalAccountDetailDTO.getSlipNo(), originalAccountDetailDTO.getSlipSeq());
 		
-		//°èÁÂ¿øÀå Á¶È¸
+		//ê³„ì¢Œì›ì¥ ì¡°íšŒ
 		AccountMasterBean accountMasterBean = new AccountMasterBean(this.transaction);
 		AccountMasterDTO accountMasterDTO = accountMasterBean.selectByAccountNo(originalAccountDetailDTO.getAccountNo());
 		
-		//ÃÖÁ¾°Å·¡ÀÏÀÚº¸´Ù ÀüÀÏÀÚ °Å·¡´Â Ãë¼Ò ºÒ°¡.
+		//ìµœì¢…ê±°ë˜ì¼ìë³´ë‹¤ ì „ì¼ì ê±°ë˜ëŠ” ì·¨ì†Œ ë¶ˆê°€.
 		if(accountMasterDTO.getLastTradeDate().compareTo(originalAccountDetailDTO.getReckonDate()) >= 0){
-			throw new EntException("ÃÖÁ¾°Å·¡ÀÏº¸´Ù ÀÌÀüÀÏÀÚ·Î °Å·¡Ãë¼Ò ºÒ°¡ ÇÕ´Ï´Ù.");
+			throw new EntException("ìµœì¢…ê±°ë˜ì¼ë³´ë‹¤ ì´ì „ì¼ìë¡œ ê±°ë˜ì·¨ì†Œ ë¶ˆê°€ í•©ë‹ˆë‹¤.");
 		}
 		
 		
 		BigDecimal bdAfterBalance = accountMasterDTO.getBalance().add(originalAccountDetailDTO.getTradeAmount());
 		
-		//Ãë¼ÒÇÏ´Â ±â»êÀÏÀÇ ¸¶Áö¸·°Å·¡ÀÇ ¼Ò±ŞÀÜ¾×À» ±¸ÇØ¿Â´Ù.
+		//ì·¨ì†Œí•˜ëŠ” ê¸°ì‚°ì¼ì˜ ë§ˆì§€ë§‰ê±°ë˜ì˜ ì†Œê¸‰ì”ì•¡ì„ êµ¬í•´ì˜¨ë‹¤.
 		AccountDetailBean accountDetailBean = new AccountDetailBean(this.transaction);
 		AccountDetailDTO accountDetailOfReckonDate = accountDetailBean.getLastAccountDetailOfReckonDate(
 				originalAccountDetailDTO.getAccountNo(),
 				originalAccountDetailDTO.getReckonDate());
 
-		//Ãë¼ÒÇÏ·Á´Â ¿ø°Å·¡ÀÇ °Å·¡±İ¾×À» »«´Ù.
+		//ì·¨ì†Œí•˜ë ¤ëŠ” ì›ê±°ë˜ì˜ ê±°ë˜ê¸ˆì•¡ì„ ëº€ë‹¤.
 		BigDecimal bdAfterReckonBalance = accountDetailOfReckonDate.getAfterReckonBalance()
 					.add(originalAccountDetailDTO.getTradeAmount());
 		
-		//»õ°Å·¡³»¿ª µî·Ï
+		//ìƒˆê±°ë˜ë‚´ì—­ ë“±ë¡
 		AccountDetailDTO newAccountDetailDTO = new AccountDetailDTO(this.transaction);
 		newAccountDetailDTO.setAccountNo(originalAccountDetailDTO.getAccountNo());
 		newAccountDetailDTO.setTradeSequence(accountMasterDTO.getLastTradeSequence()+1);
 		newAccountDetailDTO.setSlipNo(transaction.getSlipNo());
 		newAccountDetailDTO.setSlipSeq(transaction.getSlipSeq());
 		newAccountDetailDTO.setReckonDate(originalAccountDetailDTO.getReckonDate());
-		newAccountDetailDTO.setInoutType("1");		//1:ÀÔ±İ
-		newAccountDetailDTO.setTradeType(originalAccountDetailDTO.getTradeType());		//¿ø°Å·¡¿Í µ¿ÀÏÇÏ°Ô ¼ÂÆÃ.
-		newAccountDetailDTO.setCancelType("8");		//8:Á¤Á¤°Å·¡
+		newAccountDetailDTO.setInoutType("1");		//1:ì…ê¸ˆ
+		newAccountDetailDTO.setTradeType(originalAccountDetailDTO.getTradeType());		//ì›ê±°ë˜ì™€ ë™ì¼í•˜ê²Œ ì…‹íŒ….
+		newAccountDetailDTO.setCancelType("8");		//8:ì •ì •ê±°ë˜
 		newAccountDetailDTO.setRelatedTradeSequence(originalAccountDetailDTO.getTradeSequence());
 		newAccountDetailDTO.setTradeAmount(originalAccountDetailDTO.getTradeAmount());
 		newAccountDetailDTO.setCashAmount(originalAccountDetailDTO.getCashAmount());
 		newAccountDetailDTO.setNonCashAmount(originalAccountDetailDTO.getNonCashAmount());
 		newAccountDetailDTO.setAfterTradeBalance(bdAfterBalance);
 		newAccountDetailDTO.setAfterReckonBalance(bdAfterReckonBalance);
-		//newAccountDetailDTO.setRemarks("½Å¿ëÄ«µå½ÂÀÎ°Å·¡Ãë¼Ò");
+		//newAccountDetailDTO.setRemarks("ì‹ ìš©ì¹´ë“œìŠ¹ì¸ê±°ë˜ì·¨ì†Œ");
 		
 		this.transaction.insert(newAccountDetailDTO);
 		
-		//±âÁ¸°Å·¡³»¿ª ¼öÁ¤(¼Ò±ŞÀÜ¾×)
+		//ê¸°ì¡´ê±°ë˜ë‚´ì—­ ìˆ˜ì •(ì†Œê¸‰ì”ì•¡)
 		accountDetailBean.updateAccountDetailByReckonDate(newAccountDetailDTO);
 		
-		//¿ø°Å·¡³»¿ª ¼öÁ¤
+		//ì›ê±°ë˜ë‚´ì—­ ìˆ˜ì •
 		StringBuilder sbQuery = new StringBuilder(1024);
 		sbQuery.append(" update account_detail ");
 		sbQuery.append(" set cancel_type = '2'         ");
@@ -436,7 +436,7 @@ public class CancelBean implements CancelRemote {
 		this.transaction.update(sbQuery);
 		
 		
-		//°èÁÂ¿øÀå ¼öÁ¤
+		//ê³„ì¢Œì›ì¥ ìˆ˜ì •
 		AccountMasterDTO updateAccountMaster = new AccountMasterDTO(this.transaction);
 		updateAccountMaster.setBalance(newAccountDetailDTO.getAfterTradeBalance());
 		updateAccountMaster.setLastTradeSequence(newAccountDetailDTO.getTradeSequence());

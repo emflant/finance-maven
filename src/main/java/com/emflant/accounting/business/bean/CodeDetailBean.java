@@ -43,7 +43,7 @@ public class CodeDetailBean implements CodedetailRemote {
 	
 	public EntHashList queryEntHashListAddAllByCodeType(String codeType) throws EntException {
 		StringBuilder sb = new StringBuilder(1024);
-		sb.append("SELECT '*' as code, 'ÀüÃ¼' as code_name union all ");
+		sb.append("SELECT '*' as code, 'ì „ì²´' as code_name union all ");
 		sb.append("SELECT code, code_name ");
 		sb.append("FROM code_detail WHERE code_type = "+EntCommon.convertQuery(codeType));
 		sb.append(" AND use_yn = 'Y'");
@@ -100,7 +100,7 @@ public class CodeDetailBean implements CodedetailRemote {
 			//insert(inputDTO);
 			
 			transaction.insert(inputDTO);
-			transaction.setSuccessMessage("Á¤»óÀûÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
+			transaction.setSuccessMessage("ì •ìƒì ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (EntException e) {
 			transaction.setErrorMessage(e);
 			throw e;

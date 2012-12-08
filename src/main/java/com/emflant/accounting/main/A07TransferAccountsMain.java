@@ -96,44 +96,45 @@ public class A07TransferAccountsMain extends EntScreenMain {
 		this.southPanel.setBackground(Color.WHITE);
 		this.southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
-		this.lbWithdrawAccount = new JLabel("��ݰ���");
+		this.lbWithdrawAccount = new JLabel("출금계좌");
 		this.cbWithdrawAccount = new EntJComboBox();
 		this.cbWithdrawAccount.addActionListener(new CbAccountChangeListener());
 		
-		this.lbBalance = new JLabel("       �ܾ�");
+		this.lbBalance = new JLabel("       잔액");
 		this.tfBalance = new EntJTextFieldForAmount(10);
 		this.tfBalance.setEnabled(false);
 		
-		this.lbTradeDate = new JLabel("       �������");
+		this.lbTradeDate = new JLabel("       기산일자");
 		this.tfTradeDate = new EntJTextFieldForDate(7);
 		
-		this.lbDepositAccount = new JLabel("�Աݰ���");
+		this.lbDepositAccount = new JLabel("입금계좌");
 		this.cbDepositAccount = new EntJComboBox();
 		
-		this.lbTradeAmount = new JLabel("��ü�ݾ�");
+		this.lbTradeAmount = new JLabel("이체금액");
 		this.tfTradeAmount = new EntJTextFieldForAmount(7);
 
 		
-		this.lbCashAmount = new JLabel("����");
+		this.lbCashAmount = new JLabel("현금");
 		this.tfCashAmount = new EntJTextFieldForAmount(7);
 		
-		this.lbRemarks = new JLabel("���");
+		this.lbRemarks = new JLabel("적요");
 		
 		this.tfRemarks = new EntJTextFieldForRemarks(7);
 		
-		this.btnInsert = new EntJButton("���");
+		this.btnInsert = new EntJButton("등록");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 
 		this.tbAccountDetail = new EntJTable();
 		
-		//�׸����� ��������� �����Ѵ�.
+		//그리드의 헤더정보를 정의한다.
 		this.tbAccountDetail.entAddTableHeader("trade_sequence", "#", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "�ŷ�����", JLabel.CENTER, 100);
-		this.tbAccountDetail.entAddTableHeader("trade_type_name", "����", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "���", JLabel.CENTER, 50);
-		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "�ŷ��ݾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "�ܾ�", JLabel.RIGHT, 120);
-		this.tbAccountDetail.entAddTableHeader("remarks", "���", JLabel.LEFT, 260);
+		this.tbAccountDetail.entAddTableHeader("format_reckon_date", "거래일자", JLabel.CENTER, 100);
+		this.tbAccountDetail.entAddTableHeader("trade_type_name", "종류", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("cancel_type_name", "취소", JLabel.CENTER, 50);
+		this.tbAccountDetail.entAddTableHeader("format_trade_amount", "거래금액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("format_after_reckon_balance", "잔액", JLabel.RIGHT, 120);
+		this.tbAccountDetail.entAddTableHeader("remarks", "적요", JLabel.LEFT, 260);
+
 
 
 		this.panel1.add(lbWithdrawAccount);
@@ -164,7 +165,7 @@ public class A07TransferAccountsMain extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(BorderLayout.SOUTH, this.southPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		setTitle("[A07] ���������ü");
+		setTitle("[A07] 은행계좌이체");
 		
 	}
 	
@@ -176,7 +177,7 @@ public class A07TransferAccountsMain extends EntScreenMain {
 		this.transactionKinds = "INSERT";
 		
 		if(this.tfTradeAmount.getValue().equals("0")){
-			showMessageDialog("��ü�ݾ��� 0�Դϴ�.");
+			showMessageDialog("이체금액이 0입니다.");
 			return;
 		}
 		
@@ -186,14 +187,14 @@ public class A07TransferAccountsMain extends EntScreenMain {
 		String strDepositAccountNo = this.cbDepositAccount.entGetCodeOfSelectedItem();
 
 		if(strWithdrawAccountNo.equals(strDepositAccountNo)){
-			showMessageDialog("��ݰ��¿� �Աݰ��°� �����մϴ�.");
+			showMessageDialog("출금계좌와 입금계좌가 동일합니다.");
 			return;
 		}
 		
-		int nResult = showConfirmDialog("���°� ��ü ó���Ͻðڽ��ϱ�?");
+		int nResult = showConfirmDialog("계좌간 이체 처리하시겠습니까?");
 		if(nResult != 0) return;
 		
-		//����������
+		//은행계좌출금
 		A05WithdrawAccountMainInsert01DTO inputDTO1 = new A05WithdrawAccountMainInsert01DTO();
 		inputDTO1.setAccountNo(strWithdrawAccountNo);
 		inputDTO1.setReckonDate(this.tfTradeDate.getValue());
@@ -201,7 +202,7 @@ public class A07TransferAccountsMain extends EntScreenMain {
 		inputDTO1.setCashAmount(bdCashAmount);
 		inputDTO1.setRemarks(this.tfRemarks.getText());
 		
-		//��������Ա�
+		//은행계좌입금
 		A04DepositAccountMainInsert01DTO inputDTO2 = new A04DepositAccountMainInsert01DTO();
 		inputDTO2.setAccountNo(strDepositAccountNo);
 		inputDTO2.setReckonDate(this.tfTradeDate.getValue());

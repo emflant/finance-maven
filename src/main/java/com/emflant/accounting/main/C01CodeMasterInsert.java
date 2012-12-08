@@ -69,7 +69,7 @@ public class C01CodeMasterInsert extends EntScreenMain {
 		this.tfCodeTypeName.setColumns(8);
 		
 		
-		this.btnInsert = new JButton("���");
+		this.btnInsert = new JButton("등록");
 		this.btnInsert.addActionListener(new InsertButtonListener());
 		
 		
@@ -89,7 +89,7 @@ public class C01CodeMasterInsert extends EntScreenMain {
 		this.frame.getContentPane().add(BorderLayout.NORTH, this.northPanel);
 		this.frame.getContentPane().add(centerPanel, BorderLayout.CENTER);
 		
-		setTitle(this.userId + "�� �ڵ����");
+		setTitle(this.userId + "의 코드원장");
 
 	}
 	
@@ -108,7 +108,7 @@ public class C01CodeMasterInsert extends EntScreenMain {
 	public void insertCodeMaster(){
 		this.transactionKinds = "INSERT";
 		
-		int nResult = showConfirmDialog("����Ͻðڽ��ϱ�?");
+		int nResult = showConfirmDialog("등록하시겠습니까?");
 		if(nResult != 0) return;
 		
 		CodeMasterDTO codeMaster = new CodeMasterDTO();

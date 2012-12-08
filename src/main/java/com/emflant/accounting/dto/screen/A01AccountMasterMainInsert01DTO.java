@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import com.emflant.accounting.annotation.EntNotNull;
 
 /**
- * °èÁÂ½Å±Ô ÀÔ·Â°ª ¹Þ´Â DTO
+ * ê³„ì¢Œì‹ ê·œ ìž…ë ¥ê°’ ë°›ëŠ” DTO
  * @author home
  *
  */

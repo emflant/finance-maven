@@ -28,7 +28,7 @@ public abstract class EntScreenMain {
 		this.frame.setVisible(true);
 		this.frame.transferFocus();
 		bindComboBox();
-		search();				//Á¶È¸ÇÑ´Ù.
+		search();				//ì¡°íšŒí•œë‹¤.
 	}
 
 	public void setTitle(String title){
@@ -79,7 +79,7 @@ public abstract class EntScreenMain {
 			}
 		}
 
-		//¿¡·¯¸Ş½ÃÁö
+		//ì—ëŸ¬ë©”ì‹œì§€
 		if(nErrorCnt > 0){
 			entMessage = new EntMessage();
 			entMessage.setMessageType(EntMessageType.ERROR);
@@ -87,7 +87,7 @@ public abstract class EntScreenMain {
 			entMessage.showMessageDialog(this.frame);
 		} 
 		
-		//Á¤»ó¸Ş½ÃÁö
+		//ì •ìƒë©”ì‹œì§€
 		else {
 			EntMessage message = transactions.get(0).getMessage();
 			if(message != null){

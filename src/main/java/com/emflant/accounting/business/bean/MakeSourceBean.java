@@ -35,7 +35,7 @@ public class MakeSourceBean implements MakesourceRemote {
 	}	
 	
 	/**
-	 * °Å·¡ÄÚµåÁ¶È¸
+	 * ê±°ëž˜ì½”ë“œì¡°íšŒ
 	 * @throws EntException
 	 */
 	public void selectTableModelTradesByBeanType(String strInput) throws EntException {

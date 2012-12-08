@@ -25,7 +25,7 @@ public class MySqlConnection {
 						conn.setAutoCommit(false);
 					} catch (SQLException e) {
 						e.printStackTrace();
-						EntLogger.info("DB ¿¬°á¿¡ ½ÇÆĞÇß½À´Ï´Ù.");
+						EntLogger.info("DB ì—°ê²°ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.");
 					}
 					
 				}

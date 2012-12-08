@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * @author home
  * @version 1.0
- * @created 22-2-2011 ¿ÀÈÄ 1:31:43
+ * @created 22-2-2011 ì˜¤í›„ 1:31:43
  */
 public class EntDate {
 	
@@ -44,7 +44,7 @@ public class EntDate {
 	}
 	
 	/**
-	 * ÇÑÆí³Ö±â
+	 * í•œíŽ¸ë„£ê¸°
 	 * 
 	 * @param toDate
 	 */
